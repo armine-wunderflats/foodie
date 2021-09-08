@@ -1,64 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Foodie API Server
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Foodie is an API Server written with Laravel.
 
-## About Laravel
+## Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Make sure you have PHP version >=7.2.5 and [Composer](https://getcomposer.org/download) installed.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. You can easily set up the MySQL server and PHP by installing [XAMPP](https://www.apachefriends.org/download.html) or [Laragon](https://laragon.org/download/index.html). Please choose version 7.4.14 / PHP 7.4.14.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. Once the installation has finished, open the control panel and start Apache and MySQl (on XAMPP) or click run all (on Laragon).
 
-## Learning Laravel
+3. Add C:\xampp\php in your environment PATH on XAMPP. On Laragon you can do this by going to `Menu` > `Tools` > `Path` > `Add Laragon to Path`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. Create a new database and adjust the database name, username and password in the .env.example file.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. Install composer from [here](https://getcomposer.org/download/).
 
-## Laravel Sponsors
+6. Go to the project folder and run the following commands:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+ composer install
+ cp .env.example .env
+ php artisan key:generate
+ php artisan jwt:secret
+ php artisan migrate --seed
+```
 
-### Premium Partners
+## Start the Server
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+```bash
+ php artisan serve
+```
 
-## Contributing
+## Running jobs
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+In order to run jobs and broadcast events, you need to start the database queue by running the following command:
 
-## Code of Conduct
+```bash
+php artisan queue:work database
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+This process needs to keep running in order to dispatch jobs.
 
-## Security Vulnerabilities
+Alternatively, you can change `QUEUE_CONNECTION` in the .env file to `sync` and clear the application cache.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Running the scheduler
 
-## License
+In a production server you can start the scheduler by adding a cron command that runs the schedule:run command every minute. You can do so by adding the following to your crontab configuration:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+In a testing or development environment you can start the scheduler by running the following command:
+
+```bash
+php artisan schedule:work
+```
+
+You can also make the scheduler work manually by running the following command:
+
+```bash
+php artisan schedule:run
+```
+
+## Maintaining the Server
+
+1. In order to update the database with the new changes run the following command:
+
+```bash
+php artisan migrate
+```
+
+2. In order to rollback the database changes run the following command:
+
+```bash
+php artisan migrate:rollback
+```
+
+3. If you want to rebuild the database, run the following command:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+4. In order to update the .env, run `cp .env.example .env`
+
+5. If you wish to clear the application cache, run the following commands:
+
+```bash
+php artisan cache:clear
+php artisan route:clear
+php artisan config:clear
+php artisan view:clear
+composer clearcache
+composer dump-autoload
+```
+
+## Useful links
+[Spatie Roles and Permissions Documentation](https://spatie.be/docs/laravel-permission/v5/installation-laravel)
+[CORS Middleware Documentation](https://github.com/fruitcake/laravel-cors)
