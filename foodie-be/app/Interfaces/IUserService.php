@@ -2,6 +2,8 @@
 
 namespace App\Interfaces;
 
+use App\Models\User;
+
 interface IUserService
 {
     /**
@@ -34,12 +36,12 @@ interface IUserService
     /**
      * Update a given user
      * 
-     * @param App\Models\User $user
+     * @param int $id
      * @param array $data
      * 
      * @return App\Models\User $user
      */
-    public function update(User $user, $data);
+    public function update($id, $data);
 
     /**
      * Create a new user
@@ -49,4 +51,13 @@ interface IUserService
      * @return App\Models\User $user
      */
     public function create($data);
+
+    /**
+     * Delete a user by its id
+     * 
+     * @param int $id
+     * 
+     * @return boolean
+     */
+    public function delete($id);
 }

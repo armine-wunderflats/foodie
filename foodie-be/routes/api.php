@@ -22,8 +22,11 @@ $api->version('v1', function ($api) {
     $api->post('register', 'App\Http\Controllers\AuthController@register');
 
     $api->group(['middleware' => 'jwt.verify'], function ($api) {
-        // $api->get('users', 'App\Http\Controllers\UserController@index');
-        // $api->get('users/{id}', 'App\Http\Controllers\UserController@show');
+        $api->get('me', 'App\Http\Controllers\UserController@me');
+        $api->get('users', 'App\Http\Controllers\UserController@index');
+        $api->get('users/{id}', 'App\Http\Controllers\UserController@show');
+        $api->put('users/{id}', 'App\Http\Controllers\UserController@updateUser');
+        $api->delete('users/{id}', 'App\Http\Controllers\UserController@deleteUser');
         // $api->get('restaurants', 'App\Http\Controllers\RestaurantController@index');
         // $api->get('restaurants/{id}', 'App\Http\Controllers\RestaurantController@show');
         // $api->post('restaurants', 'App\Http\Controllers\RestaurantController@create');

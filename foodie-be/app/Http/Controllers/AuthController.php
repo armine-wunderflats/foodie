@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Exception;
 use JWTAuth;
 use App\Http\Controllers\Controller;
+use App\Exceptions\InternalErrorException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
@@ -16,11 +18,11 @@ use Log;
 
 class AuthController extends Controller
 {
-    private $users_service;
+    private $user_service;
 
-    public function __construct(IUserService $users_service)
+    public function __construct(IUserService $user_service)
     {
-        $this->users_service = $users_service;
+        $this->user_service = $user_service;
     }
 
     /**
@@ -28,6 +30,8 @@ class AuthController extends Controller
      *
      * @param LoginRequest $request
      *
+     * @throws BadRequestHttpException
+     * @throws InternalErrorException
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request){
@@ -38,18 +42,11 @@ class AuthController extends Controller
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Login credentials are invalid.',
-                ], 400);
+                throw new BadRequestHttpException('Login credentials are invalid.');
             }
         } catch (JWTException $e) {
             Log::warning('User login failed. Cannot provide token.', ['email' => $credentials['email'], ' error' => $e->getMessage()]);
-
-            return response()->json([
-                    'success' => false,
-                    'message' => 'Could not create token.',
-                ], 500);
+            throw new InternalErrorException('Could not create token.');
         }
 
         //Token created, return with success response and jwt token
@@ -73,19 +70,15 @@ class AuthController extends Controller
         Log::info('User trying to register.');
         
         try{
-            $user = $this->users_service->create($payload);
+            $user = $this->user_service->create($payload);
             return response()->json([
                 'success' => true,
                 'message' => 'User created successfully',
                 'data' => $user
-            ], Response::HTTP_OK);
-        }
-        catch (Exception $e) {
+            ]);
+        } catch (Exception $e) {
             Log::warning('User registration failed.', ['error' => $e->getMessage()]);
-            return response()->json([
-                'success' => false,
-                'message' => 'Could not register user'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new InternalErrorException('Could not register user');
         }
     }
 
@@ -98,10 +91,7 @@ class AuthController extends Controller
                 'message' => 'User has been logged out'
             ]);
         } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Could not log out user'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new InternalErrorException('Could not log out user');
         }
     }
 }

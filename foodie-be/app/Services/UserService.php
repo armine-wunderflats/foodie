@@ -15,7 +15,6 @@ class UserService implements IUserService
     public function getAllUsers($user)
     {
         Log::info('Getting all users');
-
         $this->validateAdmin($user);
 
         return User::all();
@@ -27,8 +26,7 @@ class UserService implements IUserService
     public function getUser($id)
     {
         Log::info('Getting user by id', ['id' => $id]);
-
-        return User::find($id);
+        return User::findOrFail($id);
     }
 
     /**
@@ -37,18 +35,29 @@ class UserService implements IUserService
     public function getUserByEmail($email)
     {
         Log::info('Getting user by email', ['email' => $email]);
-
         return User::where('email', $email)->first();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update($user, $data)
+    public function update($id, $data)
     {
-        Log::info('Updating user');
+        Log::info('Updating user', ['id' => $id]);
+        $user = $this->getUser($id);
+        $user->update($data);
         
-        return $user->update($data);
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($id)
+    {
+        Log::info('Deleting user', ['id' => $id]);
+        $user = $this->getUser($id);
+        return $user->delete();
     }
 
     /**
@@ -57,7 +66,6 @@ class UserService implements IUserService
     public function create($data)
     {
         Log::info('Creating user');
-        
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],

@@ -100,3 +100,5 @@ composer dump-autoload
 ## Useful links
 [Spatie Roles and Permissions Documentation](https://spatie.be/docs/laravel-permission/v5/installation-laravel)
 [CORS Middleware Documentation](https://github.com/fruitcake/laravel-cors)
+[JWT Documentation](https://github.com/tymondesigns/jwt-auth/wiki)
+[Dingo Documentation](https://github.com/dingo/api/wiki)
