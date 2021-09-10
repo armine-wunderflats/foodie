@@ -178,6 +178,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\MealServiceProvider::class,
+        App\Providers\OrderServiceProvider::class,
+        App\Providers\RestaurantServiceProvider::class,
     ],
 
     /*

@@ -30,8 +30,22 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
+    
+    public function restaurants()
+    {
+        return $this->hasMany(Restaurant::class, 'owner_id', 'id');
+    }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function blocked_restaurants()
+    {
+        return $this->belongsToMany(Restaurant::class, 'restaurant_blocked_users', 'user_id', 'restaurant_id');
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

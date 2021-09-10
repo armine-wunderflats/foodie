@@ -9,11 +9,9 @@ interface IUserService
     /**
      * Get all users.
      * 
-     * @param App\Models\User $user
-     *
      * @return Collection $users
      */
-    public function getAllUsers(User $user);
+    public function getAllUsers();
 
     /**
      * Get user by the id.
@@ -34,6 +32,15 @@ interface IUserService
     public function getUserByEmail($email);
 
     /**
+     * Create a new user
+     * 
+     * @param array $data
+     * 
+     * @return App\Models\User $user
+     */
+    public function create($data);
+    
+    /**
      * Update a given user
      * 
      * @param int $id
@@ -44,15 +51,6 @@ interface IUserService
     public function update($id, $data);
 
     /**
-     * Create a new user
-     * 
-     * @param array $data
-     * 
-     * @return App\Models\User $user
-     */
-    public function create($data);
-
-    /**
      * Delete a user by its id
      * 
      * @param int $id
@@ -60,4 +58,23 @@ interface IUserService
      * @return boolean
      */
     public function delete($id);
+    
+    /**
+     * Create a new restaurant
+     * 
+     * @param array $data
+     * @param App\Models\User $owner
+     * 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function createRestaurant($data, $owner);
+
+    /**
+     * Get the user's orders
+     * 
+     * @param App\Models\User $user
+     * 
+     * @return Collection $orders
+     */
+    public function getUserOrders($user);
 }

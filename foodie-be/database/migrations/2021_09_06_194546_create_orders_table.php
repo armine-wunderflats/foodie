@@ -16,7 +16,6 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('status')->default('Placed');
-            $table->double('total_price',12,2)->unsigned();
             $table->datetime('placed_on');
             $table->datetime('canceled_on')->nullable();
             $table->datetime('processing_on')->nullable();

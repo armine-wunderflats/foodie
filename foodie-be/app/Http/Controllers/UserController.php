@@ -37,16 +37,13 @@ class UserController extends Controller
     /**
      * Get all users.
      *
-     * @param Illuminate\Http\Request
-     * 
      * @throws InternalErrorException
      * @return Collection $users
      */
-    public function index(Request $request)
+    public function index()
     {
-        \Log::info($request->user());
         try {
-            return $this->user_service->getAllUsers($request->user());
+            return $this->user_service->getAllUsers();
         } catch (Exception $e) {
             Log::error('Get users, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
@@ -56,8 +53,8 @@ class UserController extends Controller
     /**
      * Get user by the id.
      *
+     * @param Illuminate\Http\Request $request
      * @param int $id
-     * @param Illuminate\Http\Request
      * 
      * @throws InternalErrorException
      * @return App\Models\User $user
@@ -75,8 +72,8 @@ class UserController extends Controller
     /**
      * Update user by id
      * 
+     * @param Illuminate\Http\Request $request
      * @param int $id
-     * @param Illuminate\Http\Request
      * 
      * @throws InternalErrorException 
      * @return App\Models\User $user
@@ -100,8 +97,8 @@ class UserController extends Controller
     /**
      * Delete user by id
      * 
+     * @param Illuminate\Http\Request $request
      * @param int $id
-     * @param Illuminate\Http\Request
      * 
      * @throws InternalErrorException 
      * @return void
@@ -112,6 +109,49 @@ class UserController extends Controller
             $this->user_service->delete($id);
         } catch (Exception $e) {
             Log::error('Delete user by id, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+    
+    /**
+     * Create a new restaurant.
+     * 
+     * @param Illuminate\Http\Request $request
+     *
+     * @throws InternalErrorException 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function createRestaurant(Request $request)
+    {
+        try {
+            $payload = $request->only([
+                'name',
+                'food_type',
+                'description',
+            ]);
+            $owner = $request->user();
+
+            return $this->user_service->createRestaurant($payload, $owner);
+        } catch (Exception $e) {
+            Log::error('Create a new restaurant, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+
+    /**
+     * Get the user's orders
+     * 
+     * @param Illuminate\Http\Request $request
+     * 
+     * @throws InternalErrorException 
+     * @return Collection $orders
+     */
+    public function getUserOrders(Request $request)
+    {
+        try {
+            return $this->user_service->getUserOrders($request->user());
+        } catch (Exception $e) {
+            Log::error(' Get all orders for the user, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
     }

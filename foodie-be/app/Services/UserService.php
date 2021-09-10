@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Hash;
 use App\Interfaces\IUserService;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Log;
 
 class UserService implements IUserService
@@ -12,11 +12,9 @@ class UserService implements IUserService
     /**
      * {@inheritdoc}
      */
-    public function getAllUsers($user)
+    public function getAllUsers()
     {
         Log::info('Getting all users');
-        $this->validateAdmin($user);
-
         return User::all();
     }
 
@@ -36,6 +34,22 @@ class UserService implements IUserService
     {
         Log::info('Getting user by email', ['email' => $email]);
         return User::where('email', $email)->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create($data)
+    {
+        Log::info('Creating user');
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+        $user->assignRole('visitor');
+
+        return $user;
     }
 
     /**
@@ -63,24 +77,18 @@ class UserService implements IUserService
     /**
      * {@inheritdoc}
      */
-    public function create($data)
+    public function createRestaurant($data, $user)
     {
-        Log::info('Creating user');
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        $user->assignRole('visitor');
-
-        return $user;
+        Log::info('Creating a new restaurant');
+        return $user->restaurants()->create($data);
     }
     
-    private function validateAdmin($user)
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserOrders($user)
     {
-        if(!$user->is_admin) {
-            Log::warning("Invalid User");
-            throw new \Exception("Invalid User");
-        }
+        Log::info('Getting all orders for the user');
+        return $user->orders()->get();
     }
 }
