@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InternalErrorException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateRestaurantRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Interfaces\IUserService;
 use Illuminate\Http\Request;
 use Exception;
 use Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
 
 class UserController extends Controller
@@ -53,17 +56,22 @@ class UserController extends Controller
     /**
      * Get user by the id.
      *
-     * @param Illuminate\Http\Request $request
      * @param int $id
      * 
      * @throws InternalErrorException
+     * @throws ModelNotFoundException
      * @return App\Models\User $user
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
         try {
             return $this->user_service->getUser($id);
         } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Get user by id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
             Log::error('Get user by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
@@ -72,13 +80,14 @@ class UserController extends Controller
     /**
      * Update user by id
      * 
-     * @param Illuminate\Http\Request $request
+     * @param App\Http\Requests\UpdateUserRequest $request
      * @param int $id
      * 
      * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
      * @return App\Models\User $user
      */
-    public function updateUser(Request $request, $id)
+    public function updateUser(UpdateUserRequest $request, $id)
     {
         try {
             $payload = $request->only([
@@ -89,6 +98,11 @@ class UserController extends Controller
 
             return $this->user_service->update($id, $payload);
         } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Update a user by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
             Log::error('Update user by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
@@ -97,17 +111,22 @@ class UserController extends Controller
     /**
      * Delete user by id
      * 
-     * @param Illuminate\Http\Request $request
      * @param int $id
      * 
      * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
      * @return void
      */
-    public function deleteUser(Request $request, $id)
+    public function deleteUser($id)
     {
         try {
             $this->user_service->delete($id);
         } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Delete user by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
             Log::error('Delete user by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
@@ -116,12 +135,12 @@ class UserController extends Controller
     /**
      * Create a new restaurant.
      * 
-     * @param Illuminate\Http\Request $request
-     *
+     * @param App\Http\Requests\CreateRestaurantRequest $request
+     * 
      * @throws InternalErrorException 
      * @return App\Models\Restaurant $restaurant
      */
-    public function createRestaurant(Request $request)
+    public function createRestaurant(CreateRestaurantRequest $request)
     {
         try {
             $payload = $request->only([
@@ -142,7 +161,6 @@ class UserController extends Controller
      * Get the user's orders
      * 
      * @param Illuminate\Http\Request $request
-     * 
      * @throws InternalErrorException 
      * @return Collection $orders
      */

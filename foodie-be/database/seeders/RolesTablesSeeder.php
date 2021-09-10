@@ -16,7 +16,7 @@ class RolesTablesSeeder extends Seeder
         app()['cache']->forget('spatie.permission.cache');
 
         Role::create(['name' => 'admin']);
-        Role::create(['name' => 'visitor']);
+        Role::create(['name' => 'customer']);
         Role::create(['name' => 'owner']);
     }
 }

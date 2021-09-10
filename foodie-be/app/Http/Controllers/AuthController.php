@@ -7,7 +7,6 @@ use JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Exceptions\InternalErrorException;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
@@ -62,7 +61,6 @@ class AuthController extends Controller
      * Register a new user.
      *
      * @param RegistrationRequest $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegistrationRequest $request){
@@ -70,7 +68,7 @@ class AuthController extends Controller
         Log::info('User trying to register.');
         
         try{
-            $user = $this->user_service->create($payload);
+            $user = $this->user_service->create($payload, $request['isOwner']);
             return response()->json([
                 'success' => true,
                 'message' => 'User created successfully',

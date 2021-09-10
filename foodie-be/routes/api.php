@@ -17,9 +17,10 @@ $api = app(Router::class);
 $api->version('v1', function ($api) {
     $api->post('login', 'App\Http\Controllers\AuthController@login');
     $api->post('register', 'App\Http\Controllers\AuthController@register');
-    // TODO: add logout
 
     $api->group(['middleware' => 'jwt.verify'], function ($api) {
+        $api->post('logout', 'App\Http\Controllers\AuthController@logout');
+
         $api->get('me', 'App\Http\Controllers\UserController@me');
         $api->get('users', 'App\Http\Controllers\UserController@index');
         $api->get('users/{id}', 'App\Http\Controllers\UserController@show');

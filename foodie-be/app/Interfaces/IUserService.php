@@ -35,11 +35,12 @@ interface IUserService
      * Create a new user
      * 
      * @param array $data
+     * @param boolean $isOwner
      * 
      * @return App\Models\User $user
      */
-    public function create($data);
-    
+    public function create($data, $isOwner);
+
     /**
      * Update a given user
      * 

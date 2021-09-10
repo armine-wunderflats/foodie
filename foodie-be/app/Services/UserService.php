@@ -39,7 +39,7 @@ class UserService implements IUserService
     /**
      * {@inheritdoc}
      */
-    public function create($data)
+    public function create($data, $isOwner)
     {
         Log::info('Creating user');
         $user = User::create([
@@ -47,7 +47,9 @@ class UserService implements IUserService
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $user->assignRole('visitor');
+        $isOwner ? 
+            $user->assignRole(constants('ROLES.OWNER')) :
+            $user->assignRole(constants('ROLES.CUSTOMER'));
 
         return $user;
     }

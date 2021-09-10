@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\InternalErrorException;
 use App\Interfaces\IOrderService;
-use Exception;
 use Illuminate\Http\Request;
+use Exception;
 use Log;
 
 class OrderController extends Controller
@@ -25,17 +26,22 @@ class OrderController extends Controller
     /**
      * Get the order by its id.
      *
-     * @param Illuminate\Http\Request $request
      * @param int $id
      * 
      * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
      * @return App\Models\Order $order
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
         try {
             return $this->order_service->getOrder($id);
         } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Get an order by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
             Log::error('Get order by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
@@ -48,6 +54,7 @@ class OrderController extends Controller
      * @param int $id
      * 
      * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
      * @return App\Models\Order $order
      */
     public function updateOrder(Request $request, $id)
@@ -66,7 +73,12 @@ class OrderController extends Controller
 
             return $this->order_service->update($id, $payload);
         } catch (Exception $e) {
-            Log::error('Update a order by its id, Exception', ['error' => $e->getMessage()]);
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Update an order by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
+            Log::error('Update an order by its id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
     }
