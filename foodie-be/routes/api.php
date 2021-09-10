@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Dingo\Api\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+$api = app(Router::class);
+$api->version('v1', function ($api) {
+    $api->post('login', 'App\Http\Controllers\AuthController@login');
+    $api->post('register', 'App\Http\Controllers\AuthController@register');
+
+    $api->group(['middleware' => 'jwt.verify'], function ($api) {
+        $api->post('logout', 'App\Http\Controllers\AuthController@logout');
+
+        $api->get('me', 'App\Http\Controllers\UserController@me');
+        $api->get('users', 'App\Http\Controllers\UserController@index');
+        $api->get('users/{id}', 'App\Http\Controllers\UserController@show');
+        $api->put('users/{id}', 'App\Http\Controllers\UserController@updateUser');
+        $api->delete('users/{id}', 'App\Http\Controllers\UserController@deleteUser');
+        $api->get('users/{id}/orders', 'App\Http\Controllers\UserController@getUserOrders');
+
+        $api->get('restaurants', 'App\Http\Controllers\RestaurantController@index');
+        $api->get('restaurants/{id}', 'App\Http\Controllers\RestaurantController@show');
+        $api->post('restaurants', 'App\Http\Controllers\UserController@createRestaurant');
+        $api->put('restaurants/{id}', 'App\Http\Controllers\RestaurantController@updateRestaurant');
+        $api->delete('restaurants/{id}', 'App\Http\Controllers\RestaurantController@deleteRestaurant');
+        $api->get('restaurants/{id}/meals', 'App\Http\Controllers\RestaurantController@getMealsByRestaurantId');
+        $api->post('restaurants/{id}/meals', 'App\Http\Controllers\RestaurantController@createMeal');
+        $api->get('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@getRestaurantOrders');
+        $api->post('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@createOrder');
+
+        $api->get('meals/{id}', 'App\Http\Controllers\MealController@show');
+        $api->put('meals/{id}', 'App\Http\Controllers\MealController@updateMeal');
+        $api->delete('meals/{id}', 'App\Http\Controllers\MealController@deleteMeal');
+
+        $api->get('orders/{id}', 'App\Http\Controllers\OrderController@show');
+        $api->put('orders/{id}', 'App\Http\Controllers\OrderController@updateOrder');
+    });
 });

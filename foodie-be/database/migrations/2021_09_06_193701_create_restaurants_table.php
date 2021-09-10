@@ -19,6 +19,13 @@ class CreateRestaurantsTable extends Migration
             $table->string('food_type')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->integer('owner_id')->unsigned();
+            
+            $table->foreign('owner_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

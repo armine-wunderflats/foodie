@@ -16,18 +16,18 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $user = User::create([
-            'name' => 'visitor1',
-            'email' => 'visitor1@gmail.com',
-            'password' => Hash::make('visitor1'),
+            'name' => 'customer1',
+            'email' => 'customer1@gmail.com',
+            'password' => Hash::make('customer1'),
         ]);
-        $user->assignRole('visitor');
+        $user->assignRole('customer');
 
         $user = User::create([
-            'name' => 'visitor2',
-            'email' => 'visitor2@gmail.com',
-            'password' => Hash::make('visitor2'),
+            'name' => 'customer2',
+            'email' => 'customer2@gmail.com',
+            'password' => Hash::make('customer2'),
         ]);
-        $user->assignRole('visitor');
+        $user->assignRole('customer');
 
         $user = User::create([
             'name' => 'LittleSicily',
