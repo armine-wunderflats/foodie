@@ -50,7 +50,7 @@ return [
 
     'create_order' => [
         'validation_rules' => [
-            'mealIds' => 'array',
+            'mealIds' => 'required|array|min:1',
         ],
     ],
 

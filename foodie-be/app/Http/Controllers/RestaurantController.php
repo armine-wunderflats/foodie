@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\InternalErrorException;
 use App\Http\Requests\CreateMealRequest;
 use App\Http\Requests\CreateOrderRequest;
@@ -9,7 +11,6 @@ use App\Http\Requests\CreateRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
 use App\Interfaces\IRestaurantService;
 use App\Models\Restaurant;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Log;
 
@@ -36,7 +37,7 @@ class RestaurantController extends Controller
     public function index()
     {
         try {
-            return $this->restaurant_service->getAllRestaurants();
+            return $this->restaurant_service->getActiveRestaurants();
         } catch (Exception $e) {
             Log::error('Get restaurants, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
@@ -245,6 +246,7 @@ class RestaurantController extends Controller
      * 
      * @throws InternalErrorException 
      * @throws ModelNotFoundException 
+     * @throws BadRequestException 
      * @return Collection $orders
      */
     public function createOrder(CreateOrderRequest $request, $id)
@@ -256,6 +258,11 @@ class RestaurantController extends Controller
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Create a new order for the restaurant, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
+            if($e instanceof BadRequestHttpException) {
+                Log::warning('Create a new order for the restaurant, BadRequestHttpException', ['error' => $e->getMessage()]);
                 throw $e;
             }
 

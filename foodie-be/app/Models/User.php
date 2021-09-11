@@ -27,6 +27,7 @@ class User extends Authenticatable implements JWTSubject
         'is_owner',
         'is_admin',
         'is_customer',
+        'blocked_restaurant_ids',
     ];
 
     /**
@@ -83,5 +84,9 @@ class User extends Authenticatable implements JWTSubject
     
     public function getIsCustomerAttribute(){
         return $this->hasRole(constants('ROLES.CUSTOMER'));
+    }
+    
+    public function getBlockedRestaurantIdsAttribute(){
+        return $this->blocked_restaurants()->pluck('restaurant_id');
     }
 }

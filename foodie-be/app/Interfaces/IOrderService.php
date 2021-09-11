@@ -40,4 +40,14 @@ interface IOrderService
      * @return App\Models\Order $order
      */
     public function update($id, $data);
+
+    /**
+     * Update the status of the given order
+     * 
+     * @param int $id
+     * @param App\Models\User $user
+     * 
+     * @return App\Models\Order $order
+     */
+    public function updateStatus($id, $user);
 }

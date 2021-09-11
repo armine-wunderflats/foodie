@@ -9,7 +9,7 @@ interface IRestaurantService
      *
      * @return Collection $restaurants
      */
-    public function getAllRestaurants();
+    public function getActiveRestaurants();
 
     /**
      * Get the restaurant by its id.

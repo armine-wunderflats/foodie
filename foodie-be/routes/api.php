@@ -43,6 +43,6 @@ $api->version('v1', function ($api) {
 
         $api->get('orders', 'App\Http\Controllers\OrderController@index');
         $api->get('orders/{id}', 'App\Http\Controllers\OrderController@show');
-        $api->put('orders/{id}', 'App\Http\Controllers\OrderController@update');
+        $api->put('orders/{id}/status', 'App\Http\Controllers\OrderController@updateStatus');
     });
 });

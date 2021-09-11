@@ -9,6 +9,13 @@ class Order extends Model
 {
     use HasFactory;
 
+    const PLACED = 'Placed';
+    const CANCELED = 'Canceled';
+    const PROCESSING = 'Processing';
+    const EN_ROUTE = 'En Route';
+    const DELIVERED = 'Delivered';
+    const RECEIVED = 'Received';
+
     /**
      * The attributes that are mass assignable.
      *
