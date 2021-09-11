@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Interfaces\IOrderService;
 use App\Models\Order;
 use App\Models\Restaurant;
-use App\Models\User;
 use Log;
 
 class OrderService implements IOrderService
@@ -13,10 +12,10 @@ class OrderService implements IOrderService
     /**
      * {@inheritdoc}
      */
-    public function getOrdersByUserId($id)
+    public function getOrdersByUser($user)
     {
-        Log::info('Getting all orders by restaurant id');
-        return User::findOrfail($id)->orders();
+        Log::info('Getting all orders by user');
+        return $user->orders()->get();
     }
 
     /**
@@ -25,7 +24,7 @@ class OrderService implements IOrderService
     public function getOrdersByRestaurantId($id)
     {
         Log::info('Getting all orders by restaurant id');
-        return Restaurant::findOrfail($id)->orders();
+        return Restaurant::findOrfail($id)->orders()->get();
     }
 
     /**

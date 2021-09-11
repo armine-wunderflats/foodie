@@ -32,6 +32,15 @@ class RestaurantService implements IRestaurantService
     /**
      * {@inheritdoc}
      */
+    public function createRestaurant($data, $user)
+    {
+        Log::info('Creating a new restaurant');
+        return $user->restaurants()->create($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function update($id, $data)
     {
         Log::info('Updating restaurant', ['id' => $id]);

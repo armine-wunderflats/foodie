@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Exceptions\InternalErrorException;
 use App\Http\Requests\CreateMealRequest;
 use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\CreateRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
 use App\Interfaces\IRestaurantService;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Log;
@@ -24,6 +26,7 @@ class RestaurantController extends Controller
     {
         $this->restaurant_service = $restaurant_service;
     }
+    
     /**
      * Get all restaurants.
      *
@@ -66,6 +69,33 @@ class RestaurantController extends Controller
     }
     
     /**
+     * Create a new restaurant.
+     * 
+     * @param App\Http\Requests\CreateRestaurantRequest $request
+     * 
+     * @throws InternalErrorException 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function create(CreateRestaurantRequest $request)
+    {
+        $this->authorize('create', Restaurant::class);
+
+        try {
+            $payload = $request->only([
+                'name',
+                'food_type',
+                'description',
+            ]);
+            $owner = $request->user();
+
+            return $this->restaurant_service->createRestaurant($payload, $owner);
+        } catch (Exception $e) {
+            Log::error('Create a new restaurant, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+    
+    /**
      * Display a collection of meals by the restaurant id
      *
      * @param int $id
@@ -101,6 +131,8 @@ class RestaurantController extends Controller
      */
     public function createMeal(CreateMealRequest $request, $id)
     {
+        $this->authorize('createMeal', $this->show($id));
+
         try {
             $payload = $request->only([
                 'name',
@@ -130,8 +162,10 @@ class RestaurantController extends Controller
      * @throws ModelNotFoundException 
      * @return App\Models\Restaurant $restaurant
      */
-    public function updateRestaurant(UpdateRestaurantRequest $request, $id)
+    public function update(UpdateRestaurantRequest $request, $id)
     {
+        $this->authorize('update', $this->show($id));
+
         try {
             $payload = $request->only([
                 'name',
@@ -160,10 +194,12 @@ class RestaurantController extends Controller
      * @throws ModelNotFoundException 
      * @return void
      */
-    public function deleteRestaurant($id)
+    public function destroy($id)
     {
+        $this->authorize('delete', $this->show($id));
+
         try {
-            $this->restaurant_service->delete($id);
+            return $this->restaurant_service->delete($id);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Delete restaurant by id, ModelNotFoundException', ['error' => $e->getMessage()]);
@@ -186,6 +222,8 @@ class RestaurantController extends Controller
      */
     public function getRestaurantOrders($id)
     {
+        $this->authorize('getRestaurantOrders', $this->show($id));
+
         try {
             return $this->restaurant_service->getRestaurantOrders($id);
         } catch (Exception $e) {
@@ -211,6 +249,8 @@ class RestaurantController extends Controller
      */
     public function createOrder(CreateOrderRequest $request, $id)
     {
+        $this->authorize('createOrder', $this->show($id));
+
         try {
             return $this->restaurant_service->createOrder($id, $request->user(), $request['mealIds']);
         } catch (Exception $e) {

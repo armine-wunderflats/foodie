@@ -22,6 +22,12 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
+        
+    protected $appends = [
+        'is_owner',
+        'is_admin',
+        'is_customer',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -68,6 +74,14 @@ class User extends Authenticatable implements JWTSubject
     }
     
     public function getIsAdminAttribute(){
-        return $this->hasRole('admin');
+        return $this->hasRole(constants('ROLES.ADMIN'));
+    }
+    
+    public function getIsOwnerAttribute(){
+        return $this->hasRole(constants('ROLES.OWNER'));
+    }
+    
+    public function getIsCustomerAttribute(){
+        return $this->hasRole(constants('ROLES.CUSTOMER'));
     }
 }

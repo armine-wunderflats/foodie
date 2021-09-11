@@ -16,11 +16,11 @@ interface IOrderService
     /**
      * Get all orders.
      * 
-     * @param int $id
+     * @param App\Models\User $user
      *
      * @return Collection $orders
      */
-    public function getOrdersByUserId($id);
+    public function getOrdersByUser($user);
 
     /**
      * Get the order by its id.

@@ -24,6 +24,25 @@ class OrderController extends Controller
     }
 
     /**
+     * Get the orders for the current user
+     * 
+     * @param Illuminate\Http\Request $request
+     * @throws InternalErrorException 
+     * @return Collection $orders
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Order::class);
+
+        try {
+            return $this->order_service->getOrdersByUser($request->user());
+        } catch (Exception $e) {
+            Log::error('Get the orders for the current user, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+
+    /**
      * Get the order by its id.
      *
      * @param int $id
@@ -35,7 +54,7 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            return $this->order_service->getOrder($id);
+            $order = $this->order_service->getOrder($id);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Get an order by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
@@ -45,6 +64,10 @@ class OrderController extends Controller
             Log::error('Get order by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
+
+        $this->authorize('view', $order);
+
+        return $order;
     }
 
     /**
@@ -57,8 +80,10 @@ class OrderController extends Controller
      * @throws ModelNotFoundException 
      * @return App\Models\Order $order
      */
-    public function updateOrder(Request $request, $id)
+    public function update(Request $request, $id)
     {
+        $this->authorize('update', $this->show($id));
+
         try {
             $payload = $request->only([
                 'status',

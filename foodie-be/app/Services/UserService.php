@@ -75,22 +75,4 @@ class UserService implements IUserService
         $user = $this->getUser($id);
         return $user->delete();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createRestaurant($data, $user)
-    {
-        Log::info('Creating a new restaurant');
-        return $user->restaurants()->create($data);
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getUserOrders($user)
-    {
-        Log::info('Getting all orders for the user');
-        return $user->orders()->get();
-    }
 }
