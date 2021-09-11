@@ -59,23 +59,4 @@ interface IUserService
      * @return boolean
      */
     public function delete($id);
-    
-    /**
-     * Create a new restaurant
-     * 
-     * @param array $data
-     * @param App\Models\User $owner
-     * 
-     * @return App\Models\Restaurant $restaurant
-     */
-    public function createRestaurant($data, $owner);
-
-    /**
-     * Get the user's orders
-     * 
-     * @param App\Models\User $user
-     * 
-     * @return Collection $orders
-     */
-    public function getUserOrders($user);
 }

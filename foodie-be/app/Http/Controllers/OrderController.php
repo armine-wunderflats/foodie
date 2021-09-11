@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\InternalErrorException;
 use App\Interfaces\IOrderService;
@@ -24,6 +25,25 @@ class OrderController extends Controller
     }
 
     /**
+     * Get the orders for the current user
+     * 
+     * @param Illuminate\Http\Request $request
+     * @throws InternalErrorException 
+     * @return Collection $orders
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Order::class);
+
+        try {
+            return $this->order_service->getOrdersByUser($request->user());
+        } catch (Exception $e) {
+            Log::error('Get the orders for the current user, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+
+    /**
      * Get the order by its id.
      *
      * @param int $id
@@ -35,7 +55,7 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            return $this->order_service->getOrder($id);
+            $order = $this->order_service->getOrder($id);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Get an order by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
@@ -45,40 +65,41 @@ class OrderController extends Controller
             Log::error('Get order by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
+
+        $this->authorize('view', $order);
+
+        return $order;
     }
 
     /**
-     * Update a order by its id.
+     * Update the order's status by its id.
      *
      * @param Illuminate\Http\Request $request
      * @param int $id
      * 
      * @throws InternalErrorException 
      * @throws ModelNotFoundException 
+     * @throws AccessDeniedHttpException 
      * @return App\Models\Order $order
      */
-    public function updateOrder(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
-        try {
-            $payload = $request->only([
-                'status',
-                'total_price',
-                'placed_on',
-                'canceled_on',
-                'processing_on',
-                'en_route_on',
-                'delivered_on',
-                'received_on',
-            ]);
+        $this->authorize('update', $this->show($id));
 
-            return $this->order_service->update($id, $payload);
+        try {
+            return $this->order_service->updateStatus($id, $request->user());
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
-                Log::warning('Update an order by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                Log::warning('Update the order\'s status by its id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+            
+            if($e instanceof AccessDeniedHttpException) {
+                Log::warning('Update the order\'s status by its id, AccessDeniedHttpException', ['error' => $e->getMessage()]);
                 throw $e;
             }
 
-            Log::error('Update an order by its id, Exception', ['error' => $e->getMessage()]);
+            Log::error('Update the order\'s status by its id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
     }

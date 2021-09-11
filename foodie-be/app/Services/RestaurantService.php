@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Interfaces\IRestaurantService;
 use App\Models\Meal;
 use App\Models\Order;
@@ -14,10 +15,10 @@ class RestaurantService implements IRestaurantService
     /**
      * {@inheritdoc}
      */
-    public function getAllRestaurants()
+    public function getActiveRestaurants()
     {
         Log::info('Getting all restaurants');
-        return Restaurant::all();
+        return Restaurant::active()->get();
     }
 
     /**
@@ -27,6 +28,15 @@ class RestaurantService implements IRestaurantService
     {
         Log::info('Getting restaurant by id', ['id' => $id]);
         return Restaurant::findOrFail($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createRestaurant($data, $user)
+    {
+        Log::info('Creating a new restaurant');
+        return $user->restaurants()->create($data);
     }
 
     /**
@@ -84,12 +94,29 @@ class RestaurantService implements IRestaurantService
     public function createOrder($restaurant_id, $user, $mealIds)
     {
         Log::info('Creating a new order');
+        $mealIds = $this->filterMealIds($restaurant_id, $mealIds);
+
         $order = new Order();
         $order->placed_on = Carbon::now();
         $order->user()->associate($user);
         $order = Restaurant::findOrFail($restaurant_id)->orders()->save($order);
-        $order->meals()->sync($mealIds);
+        $order->meals()->attach($mealIds);
 
         return $order;
+    }
+
+    private function filterMealIds($restaurant_id, $mealIds)
+    {
+        $array = [];
+        foreach($mealIds as $id) {
+            $meal = Meal::findOrFail($id);
+            if($meal->restaurant->id == $restaurant_id) $array[] = $id;
+        }
+
+        if(count($array) == 0) {
+            throw new BadRequestHttpException('The order doesn\'t have any meals from the given restaurant');
+        }
+
+        return $array;
     }
 }

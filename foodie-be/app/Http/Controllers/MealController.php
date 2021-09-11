@@ -57,8 +57,10 @@ class MealController extends Controller
      * @throws ModelNotFoundException 
      * @return App\Models\Meal $meal
      */
-    public function updateMeal(UpdateMealRequest $request, $id)
+    public function update(UpdateMealRequest $request, $id)
     {
+        $this->authorize('update', $this->show($id));
+
         try {
             $payload = $request->only([
                 'name',
@@ -87,8 +89,10 @@ class MealController extends Controller
      * @throws ModelNotFoundException 
      * @return void
      */
-    public function deleteMeal($id)
+    public function destroy($id)
     {
+        $this->authorize('delete', $this->show($id));
+
         try {
             $this->meal_service->delete($id);
         } catch (Exception $e) {

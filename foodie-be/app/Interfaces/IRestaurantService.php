@@ -9,7 +9,7 @@ interface IRestaurantService
      *
      * @return Collection $restaurants
      */
-    public function getAllRestaurants();
+    public function getActiveRestaurants();
 
     /**
      * Get the restaurant by its id.
@@ -19,6 +19,16 @@ interface IRestaurantService
      * @return App\Models\Restaurant $restaurant
      */
     public function getRestaurant($id);
+    
+    /**
+     * Create a new restaurant
+     * 
+     * @param array $data
+     * @param App\Models\User $owner
+     * 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function createRestaurant($data, $owner);
 
     /**
      * Update a given restaurant
