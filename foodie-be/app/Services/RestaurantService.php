@@ -15,10 +15,13 @@ class RestaurantService implements IRestaurantService
     /**
      * {@inheritdoc}
      */
-    public function getActiveRestaurants()
+    public function getActiveRestaurants($filter)
     {
-        Log::info('Getting all restaurants');
-        return Restaurant::active()->get();
+        Log::info('Getting restaurants');
+        return Restaurant::active()
+            ->where('name', 'LIKE', '%'.$filter.'%')
+            ->orWhere('food_type', 'LIKE', '%'.$filter.'%')
+            ->paginate(constants('PAGINATION_SIZE'));
     }
 
     /**

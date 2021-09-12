@@ -6,10 +6,12 @@ interface IRestaurantService
 {
     /**
      * Get all restaurants.
+     * 
+     * @param string $filter
      *
      * @return Collection $restaurants
      */
-    public function getActiveRestaurants();
+    public function getActiveRestaurants($filter);
 
     /**
      * Get the restaurant by its id.
