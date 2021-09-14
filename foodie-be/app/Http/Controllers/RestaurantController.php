@@ -9,6 +9,7 @@ use App\Http\Requests\CreateMealRequest;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\CreateRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
+use Illuminate\Http\Request;
 use App\Interfaces\IRestaurantService;
 use App\Models\Restaurant;
 use Exception;
@@ -34,10 +35,10 @@ class RestaurantController extends Controller
      * @throws InternalErrorException
      * @return Collection $restaurants
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            return $this->restaurant_service->getActiveRestaurants();
+            return $this->restaurant_service->getActiveRestaurants($request->filter);
         } catch (Exception $e) {
             Log::error('Get restaurants, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
@@ -252,9 +253,14 @@ class RestaurantController extends Controller
     public function createOrder(CreateOrderRequest $request, $id)
     {
         $this->authorize('createOrder', $this->show($id));
+        $payload = $request->only([
+            'mealIds',
+            'address',
+            'instructions',
+        ]);
 
         try {
-            return $this->restaurant_service->createOrder($id, $request->user(), $request['mealIds']);
+            return $this->restaurant_service->createOrder($id, $request->user(), $payload);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Create a new order for the restaurant, ModelNotFoundException', ['error' => $e->getMessage()]);

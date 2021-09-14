@@ -23,6 +23,8 @@ class Order extends Model
      */
     protected $fillable = [
         'status',
+        'address',
+        'instructions',
         'placed_on',
         'canceled_on',
         'processing_on',

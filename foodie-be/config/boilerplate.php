@@ -20,7 +20,7 @@ return [
         'validation_rules' => [
             'name' => 'required|string',
             'price' => 'required|numeric',
-            'description' => 'string',
+            'description' => 'nullable|string',
         ],
     ],
 
@@ -28,7 +28,7 @@ return [
         'validation_rules' => [
             'name' => 'string',
             'price' => 'numeric',
-            'description' => 'string',
+            'description' => 'nullable|string',
         ],
     ],
 
@@ -36,7 +36,7 @@ return [
         'validation_rules' => [
             'name' => 'required|string',
             'food_type' => 'required|string',
-            'description' => 'string',
+            'description' => 'nullable|string',
         ],
     ],
 
@@ -44,13 +44,15 @@ return [
         'validation_rules' => [
             'name' => 'string',
             'food_type' => 'string',
-            'description' => 'string',
+            'description' => 'nullable|string',
         ],
     ],
 
     'create_order' => [
         'validation_rules' => [
             'mealIds' => 'required|array|min:1',
+            'address' => 'required|string',
+            'instructions' => 'nullable|string',
         ],
     ],
 
