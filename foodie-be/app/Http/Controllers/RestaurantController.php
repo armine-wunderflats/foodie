@@ -253,9 +253,14 @@ class RestaurantController extends Controller
     public function createOrder(CreateOrderRequest $request, $id)
     {
         $this->authorize('createOrder', $this->show($id));
+        $payload = $request->only([
+            'mealIds',
+            'address',
+            'instructions',
+        ]);
 
         try {
-            return $this->restaurant_service->createOrder($id, $request->user(), $request['mealIds']);
+            return $this->restaurant_service->createOrder($id, $request->user(), $payload);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Create a new order for the restaurant, ModelNotFoundException', ['error' => $e->getMessage()]);

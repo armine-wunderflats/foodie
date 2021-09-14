@@ -7,13 +7,13 @@ import AuthenticationRoute from './components/AuthenticationRoute';
 import { authenticate } from './redux/ducks/auth';
 import HomeScreen from './screens/HomeScreen/index.js';
 import LoginScreen from './screens/LoginScreen/index.js';
+import RestaurantScreen from './screens/RestaurantScreen/index.js';
 import RegistrationScreen from './screens/RegistrationScreen/index.js';
 
 const App = ({ authenticate }) => {
 	useEffect(() => {
 		authenticate();
-		console.log('Calling authenticate');
-	}, [authenticate]);
+	}, []);
 
 	return (
 		<div className="App">
@@ -29,6 +29,12 @@ const App = ({ authenticate }) => {
 					withAuth={false}
 					component={RegistrationScreen}
 					redirectOnFailure="/"
+				/>
+				<AuthenticationRoute
+					path="/restaurants/:id"
+					withAuth={true}
+					component={RestaurantScreen}
+					redirectOnFailure="/login"
 				/>
 				<AuthenticationRoute
 					path="/"

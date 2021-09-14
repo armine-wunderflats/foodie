@@ -51,7 +51,6 @@ const userSlice = createSlice({
 const userReducer = userSlice.reducer;
 
 export const getCurrentUser = () => {
-	console.log('CALLING getCurrentUser');
 	return dispatch => {
 		dispatch(userSlice.actions.getCurrentUser());
 

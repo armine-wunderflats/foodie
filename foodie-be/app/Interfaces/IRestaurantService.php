@@ -84,9 +84,9 @@ interface IRestaurantService
      * 
      * @param id $restaurant_id
      * @param App\Models\User $user
-     * @param int[] $mealIds
+     * @param array $data
      * 
      * @return App\Models\Order $order
      */
-    public function createOrder($restaurant_id, $data, $mealIds);
+    public function createOrder($restaurant_id, $user, $data);
 }

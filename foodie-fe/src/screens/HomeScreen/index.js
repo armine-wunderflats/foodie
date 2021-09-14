@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 const Restaurants = ({ data }) => {
 	const { innerWidth: width } = window;
 
-	String.prototype.trunc = function (n = 500) {
+	String.prototype.trunc = function (n = 250) {
 		return this.substr(0, n - 1) + (this.length > n ? '...' : '');
 	};
 
@@ -23,7 +23,7 @@ const Restaurants = ({ data }) => {
 						to={`/restaurants/${item.id}`}
 					>
 						<h3 className="itemTitle">{item.name}</h3>
-						<p className="itemType">{item.food_type}</p>
+						<p className="itemSubtitle">{item.food_type}</p>
 						<p>{item.description?.trunc()}</p>
 					</Button>
 				</Grid.Column>
@@ -49,7 +49,8 @@ const HomeScreen = props => {
 
 	useEffect(() => getRestaurants(props.current_page), []);
 
-	if (!restaurantList) return <Loader loading={!restaurantList} />;
+	if (!restaurantList || !restaurantList.data)
+		return <Loader loading={!restaurantList || !restaurantList.data} />;
 	const { current_page, last_page, data } = restaurantList;
 
 	return (

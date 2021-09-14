@@ -6,9 +6,7 @@ import { register } from '../../redux/ducks/auth';
 import RegistrationForm from '../../components/RegistrationForm';
 
 const RegistrationScreen = ({ loading, history, register }) => {
-	const onSubmit = data => {
-		register(data);
-	};
+	const onSubmit = data => register(data);
 
 	return (
 		<div id="auth_screen">
@@ -19,8 +17,8 @@ const RegistrationScreen = ({ loading, history, register }) => {
 				onClick={() => history.goBack()}
 			/>
 			<Loader loading={loading} />
-			<h1>Welcome to Foodie</h1>
-			<h2>Please Register to Continue</h2>
+			<h1 className="pageTitle">Welcome to Foodie</h1>
+			<h2 className="pageTitle">Please Register to Continue</h2>
 			<RegistrationForm onSubmit={onSubmit} />
 		</div>
 	);

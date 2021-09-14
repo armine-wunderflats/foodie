@@ -30,7 +30,7 @@ class RestaurantService implements IRestaurantService
     public function getRestaurant($id)
     {
         Log::info('Getting restaurant by id', ['id' => $id]);
-        return Restaurant::findOrFail($id);
+        return Restaurant::with('meals')->findOrFail($id);
     }
 
     /**
@@ -94,13 +94,16 @@ class RestaurantService implements IRestaurantService
     /**
      * {@inheritdoc}
      */
-    public function createOrder($restaurant_id, $user, $mealIds)
+    public function createOrder($restaurant_id, $user, $data)
     {
         Log::info('Creating a new order');
-        $mealIds = $this->filterMealIds($restaurant_id, $mealIds);
+        $mealIds = $this->filterMealIds($restaurant_id, $data['mealIds']);
 
-        $order = new Order();
-        $order->placed_on = Carbon::now();
+        $order = new Order([
+            'address' => $data['address'],
+            'instructions' => array_key_exists('instructions', $data) ? $data['instructions'] : '',
+            'placed_on' => Carbon::now(),
+        ]);
         $order->user()->associate($user);
         $order = Restaurant::findOrFail($restaurant_id)->orders()->save($order);
         $order->meals()->attach($mealIds);

@@ -1,5 +1,6 @@
 const constants = {
 	token: 'token',
+	shoppingCart: 'shoppingCart',
 	isAdmin: 'isAdmin',
 	roles: {
 		ADMIN: 'Admin',
