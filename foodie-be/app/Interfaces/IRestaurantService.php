@@ -21,6 +21,15 @@ interface IRestaurantService
      * @return App\Models\Restaurant $restaurant
      */
     public function getRestaurant($id);
+
+    /**
+     * Get the restaurants by its owner.
+     *
+     * @param App\Models\User $owner
+     *
+     * @return Collection $restaurants
+     */
+    public function getUserRestaurants($owner);
     
     /**
      * Create a new restaurant

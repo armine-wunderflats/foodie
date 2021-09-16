@@ -36,6 +36,15 @@ class RestaurantService implements IRestaurantService
     /**
      * {@inheritdoc}
      */
+    public function getUserRestaurants($owner)
+    {
+        Log::info('Getting restaurant by the owner', ['owner id' => $owner->id]);
+        return $owner->restaurants()->with('meals')->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createRestaurant($data, $user)
     {
         Log::info('Creating a new restaurant');

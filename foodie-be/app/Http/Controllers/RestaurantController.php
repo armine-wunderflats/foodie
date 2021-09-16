@@ -31,6 +31,8 @@ class RestaurantController extends Controller
     
     /**
      * Get all restaurants.
+     * 
+     * @param Illuminate\Http\Request $request
      *
      * @throws InternalErrorException
      * @return Collection $restaurants
@@ -66,6 +68,31 @@ class RestaurantController extends Controller
             }
 
             Log::error('Get restaurant by id, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+
+    /**
+     * Get restaurants by the owner.
+     *
+     * @param Illuminate\Http\Request $request
+     * 
+     * @throws ModelNotFoundException
+     * @throws InternalErrorException
+     * @return Collection $restaurants
+     */
+    public function getUserRestaurants(Request $request)
+    {
+        try {
+            return $this->restaurant_service->getUserRestaurants($request->user());
+        }
+        catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Get restaurants by the owner, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
+            Log::error('Get restaurants by the owner, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
     }

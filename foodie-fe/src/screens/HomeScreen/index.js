@@ -1,47 +1,35 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Button, Icon, Input, Grid } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import Loader from '../../components/Loader';
-import { getRestaurants } from '../../redux/ducks/restaurant';
+import { Button, Icon, Input } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
+
+import Loader from '../../components/Loader';
 import MenuDrawer from './MenuDrawer';
-
-const Restaurants = ({ data }) => {
-	const { innerWidth: width } = window;
-
-	String.prototype.trunc = function (n = 250) {
-		return this.substr(0, n - 1) + (this.length > n ? '...' : '');
-	};
-
-	return (
-		<Grid columns={width > 500 ? 2 : 1}>
-			{data.map(item => (
-				<Grid.Column key={item.id}>
-					<Button
-						as={Link}
-						className="itemContainer"
-						to={`/restaurants/${item.id}`}
-					>
-						<h3 className="itemTitle">{item.name}</h3>
-						<p className="itemSubtitle">{item.food_type}</p>
-						<p>{item.description?.trunc()}</p>
-					</Button>
-				</Grid.Column>
-			))}
-		</Grid>
-	);
-};
+import Restaurants from './Restaurants';
+import {
+	getRestaurants,
+	getOwnerRestaurants,
+} from '../../redux/ducks/restaurant';
+import { getCurrentUser } from '../../redux/ducks/user';
 
 const HomeScreen = props => {
-	const { restaurantList, getRestaurants } = props;
+	const {
+		restaurantList,
+		getRestaurants,
+		getOwnerRestaurants,
+		user,
+		getCurrentUser,
+	} = props;
 	const [visible, setVisible] = useState(false);
 	const debouncedgetRestaurants = useCallback(
 		debounce(
-			(current_page, filter) => getRestaurants(current_page, filter),
+			(current_page, filter) =>
+				user.is_owner
+					? getOwnerRestaurants()
+					: getRestaurants(current_page, filter),
 			500
 		),
-		[]
+		[user]
 	);
 
 	const handleChange = useCallback(event => {
@@ -49,7 +37,15 @@ const HomeScreen = props => {
 		debouncedgetRestaurants(restaurantList?.current_page, filter);
 	}, []);
 
-	useEffect(() => getRestaurants(props.current_page), []);
+	useEffect(() => {
+		getCurrentUser();
+	}, []);
+
+	useEffect(() => {
+		if (!user) return;
+
+		user.is_owner ? getOwnerRestaurants() : getRestaurants(props.current_page);
+	}, [user]);
 
 	if (!restaurantList || !restaurantList.data) return <Loader />;
 	const { current_page, last_page, data } = restaurantList;
@@ -69,39 +65,44 @@ const HomeScreen = props => {
 				</Input>
 			</div>
 			<div className="container">
-				<Restaurants data={data} />
+				<Restaurants data={data} isOwner={user?.is_owner} />
 			</div>
-			<div className="pagination">
-				{current_page > 1 && (
-					<Button
-						secondary
-						className="floatLeft"
-						onClick={() => getRestaurants(current_page - 1)}
-					>
-						Previous
-					</Button>
-				)}
-				{last_page != current_page && (
-					<Button
-						secondary
-						className="floatRight"
-						onClick={() => getRestaurants(current_page + 1)}
-					>
-						Next
-					</Button>
-				)}
-			</div>
+			{!user?.is_owner && (
+				<div className="pagination">
+					{current_page > 1 && (
+						<Button
+							secondary
+							className="floatLeft"
+							onClick={() => getRestaurants(current_page - 1)}
+						>
+							Previous
+						</Button>
+					)}
+					{last_page != current_page && (
+						<Button
+							secondary
+							className="floatRight"
+							onClick={() => getRestaurants(current_page + 1)}
+						>
+							Next
+						</Button>
+					)}
+				</div>
+			)}
 			<MenuDrawer visible={visible} setVisible={setVisible} />
 		</div>
 	);
 };
 
 const mapStateToProps = state => ({
+	user: state.user.currentUser,
 	current_page: state.restaurant.current_page,
 	restaurantList: state.restaurant.restaurantList,
 });
 
 const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => dispatch(getCurrentUser()),
+	getOwnerRestaurants: () => dispatch(getOwnerRestaurants()),
 	getRestaurants: (page, filter) => dispatch(getRestaurants(page, filter)),
 });
 

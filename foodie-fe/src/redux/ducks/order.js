@@ -102,9 +102,10 @@ export const getUserOrders = () => {
 export const getRestaurantOrders = id => {
 	return dispatch => {
 		dispatch(orderSlice.actions.getOrders());
+		console.log('AAAAAAAAAAAAAAAAAAAAAA');
 
 		axios
-			.get(`${API_URL}restaurants/${id}/orders`)
+			.get(`${API_URL}/restaurants/${id}/orders`)
 			.then(r => r.data)
 			.then(data => {
 				dispatch(orderSlice.actions.getOrdersSuccess(data));

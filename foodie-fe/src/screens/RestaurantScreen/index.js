@@ -2,16 +2,19 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import Loader from '../../components/Loader';
 
+import { getCurrentUser } from '../../redux/ducks/user';
 import { getRestaurantById } from '../../redux/ducks/restaurant';
-import constants from '../../constants';
-import Meals from './Meals';
+import Loader from '../../components/Loader';
 import ShoppingCart from './ShoppingCart';
+import RestaurantOptions from './RestaurantOptions';
+import Meals from './Meals';
+import constants from '../../constants';
 
 const RestaurantScreen = props => {
 	const { id } = useParams();
-	const { restaurant, history, getRestaurantById } = props;
+	const { user, restaurant, history, getRestaurantById, getCurrentUser } =
+		props;
 	const [visible, setVisible] = useState(false);
 	const [cartItems, setCartItems] = useState([]);
 	const [cart, setCart] = useState(
@@ -26,6 +29,7 @@ const RestaurantScreen = props => {
 	);
 
 	useEffect(() => {
+		!user && getCurrentUser();
 		getRestaurantById(id);
 	}, []);
 
@@ -41,6 +45,9 @@ const RestaurantScreen = props => {
 		const newCart = [...cart, itemId];
 		setCart(newCart);
 	};
+
+	const isOwner = user?.is_owner;
+	const isCustomer = user?.is_customer;
 
 	const handleDeduct = itemId => {
 		const index = cart.indexOf(itemId);
@@ -62,37 +69,56 @@ const RestaurantScreen = props => {
 			<h2 className="darkBlue">{restaurant.food_type}</h2>
 			<div className="container">
 				<p>{restaurant.description}</p>
-				<Button
-					className="floatRight cart"
-					disabled={cart.length < 1}
-					onClick={() => setVisible(true)}
-				>
-					View Cart
-					<Icon name="cart" size="large" />
-				</Button>
+				{isCustomer && (
+					<Button
+						className="floatRight cart"
+						disabled={cart.length < 1}
+						onClick={() => setVisible(true)}
+					>
+						View Cart
+						<Icon name="cart" size="large" />
+					</Button>
+				)}
+				{isOwner && (
+					<Button className="floatRight cart" onClick={() => setVisible(true)}>
+						<Icon name="bars" size="large" />
+					</Button>
+				)}
 				<Meals
 					data={restaurant.meals}
 					handleAdd={handleAdd}
 					handleDeduct={handleDeduct}
 					occurences={occurences}
+					isCustomer={isCustomer}
 				/>
 			</div>
-			<ShoppingCart
-				cart={cart}
-				cartItems={cartItems}
-				visible={visible}
-				setVisible={setVisible}
-				occurences={occurences}
-			/>
+			{isCustomer && (
+				<ShoppingCart
+					cart={cart}
+					cartItems={cartItems}
+					visible={visible}
+					setVisible={setVisible}
+					occurences={occurences}
+				/>
+			)}
+			{isOwner && (
+				<RestaurantOptions
+					visible={visible}
+					setVisible={setVisible}
+					restaurant={restaurant}
+				/>
+			)}
 		</div>
 	);
 };
 
 const mapStateToProps = state => ({
 	restaurant: state.restaurant.restaurant,
+	user: state.user.currentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => dispatch(getCurrentUser()),
 	getRestaurantById: id => dispatch(getRestaurantById(id)),
 });
 

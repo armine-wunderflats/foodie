@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import Loader from '../../components/Loader';
 import moment from 'moment';
 
+import Loader from '../../components/Loader';
 import { getCurrentUser } from '../../redux/ducks/user';
 import { getOrderById, updateOrderStatus } from '../../redux/ducks/order';
 import { numberToCash } from '../../helpers/numberHelper';
@@ -25,12 +25,16 @@ const SingleOrder = props => {
 	const isCustomer = user?.is_customer;
 	const nextStatus = useMemo(() => {
 		const statuses = Object.values(constants.orderStatus);
-		if (order?.status === statuses.PLACED)
-			return isOwner ? statuses.PROCESSING : statuses.CANCELED;
+		console.log(statuses);
+		if (order?.status === constants.orderStatus.PLACED)
+			return isOwner
+				? constants.orderStatus.PROCESSING
+				: constants.orderStatus.CANCELED;
 
 		const index = statuses.indexOf(order?.status);
 		return statuses[index === statuses.length ? index : index + 1];
-	}, [order]);
+	}, [order, user]);
+
 	const buttonText = useMemo(
 		() =>
 			nextStatus === constants.orderStatus.CANCELED

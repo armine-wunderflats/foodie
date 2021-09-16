@@ -33,15 +33,15 @@ const App = ({ authenticate }) => {
 					redirectOnFailure="/"
 				/>
 				<AuthenticationRoute
-					path="/restaurants/:id"
-					withAuth
-					component={RestaurantScreen}
-					redirectOnFailure="/login"
-				/>
-				<AuthenticationRoute
 					path="/restaurants/:id/orders"
 					withAuth
 					component={OrderScreen}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
+					path="/restaurants/:id"
+					withAuth
+					component={RestaurantScreen}
 					redirectOnFailure="/login"
 				/>
 				<AuthenticationRoute

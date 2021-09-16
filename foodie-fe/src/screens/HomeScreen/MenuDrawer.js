@@ -1,9 +1,9 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Sidebar, Menu, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import Loader from '../../components/Loader';
 
+import Loader from '../../components/Loader';
 import { getCurrentUser } from '../../redux/ducks/user';
 import { clearAuthentication } from '../../redux/ducks/auth';
 
@@ -23,6 +23,7 @@ const MenuDrawer = props => {
 	if (loading || !user) return <Loader />;
 
 	const isOwner = user.is_owner;
+	const isCustomer = user.is_customer;
 	const { innerWidth: width } = window;
 
 	return (
@@ -37,10 +38,18 @@ const MenuDrawer = props => {
 			width={width > 600 ? 'wide' : 'thin'}
 			className="menuDrawer"
 		>
-			<Menu.Item as={Link} to="/orders" className="menuItem">
-				<Icon name="list" size="large" />
-				Orders
-			</Menu.Item>
+			{isCustomer && (
+				<Menu.Item as={Link} to="/orders" className="menuItem">
+					<Icon name="list" size="large" />
+					Orders
+				</Menu.Item>
+			)}
+			{isOwner && (
+				<Menu.Item as={Link} to="/restaurant" className="menuItem">
+					<Icon name="food" size="large" />
+					Add Restaurant
+				</Menu.Item>
+			)}
 			<Button className="logout" primary onClick={clearAuthentication}>
 				Log Out
 				<Icon name="sign-out" />

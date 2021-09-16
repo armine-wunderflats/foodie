@@ -91,6 +91,27 @@
 	color: #04497d;
 }
 
+.menuDrawer {
+	padding: 20px 0 !important;
+}
+
+.menuItem {
+	padding: 30px !important;
+	display: flex !important;
+	font-size: 17px !important;
+	line-height: 25px !important;
+}
+
+.menuItem i {
+	margin: 0 !important;
+	margin-right: 15px !important;
+}
+
+.emptyList {
+	margin-top: 50px !important;
+	color: gray;
+}
+
 #login_screen,
 #auth_screen {
 	display: flex;
@@ -147,22 +168,6 @@
 	margin-left: 10px;
 }
 
-#home_screen .menuDrawer {
-	padding: 20px 0;
-}
-
-#home_screen .menuItem {
-	padding: 30px;
-	display: flex;
-	font-size: 17px;
-	line-height: 25px;
-}
-
-#home_screen .menuItem i {
-	margin: 0;
-	margin-right: 15px;
-}
-
 #home_screen .logout {
 	margin: 50px 20px;
 }
@@ -217,6 +222,15 @@
 	width: 100%;
 }
 
+#order_screen .orderInfo {
+	display: flex;
+	justify-content: space-between;
+}
+
+#order_screen .orderInfo span {
+	margin: 0 40px;
+}
+
 #single_order_screen .item {
 	padding: 20px;
 	margin: 10px 0;
@@ -258,6 +272,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+	.menuDrawer {
+		padding: 10px 0 !important;
+	}
+
 	#home_screen .container .input {
 		margin: 0 20px;
 		float: none;
@@ -269,15 +287,15 @@
 		margin-left: -10px;
 	}
 
-	#home_screen .menuDrawer {
-		padding: 10px 0;
-	}
-
 	#home_screen .logout {
 		width: auto;
 	}
 
 	#home_screen .logout i {
 		display: none;
+	}
+
+	#order_screen .orderInfo span {
+		margin: 0 10px;
 	}
 }

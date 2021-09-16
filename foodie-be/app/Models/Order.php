@@ -37,6 +37,8 @@ class Order extends Model
     
     protected $appends = [
         'total_price',
+        'restaurant_name',
+        'customer_name',
     ];
     
     public function user()
@@ -57,5 +59,15 @@ class Order extends Model
     public function getTotalPriceAttribute()
     {
         return $this->meals->sum('price');
+    }
+
+    public function getRestaurantNameAttribute()
+    {
+        return $this->restaurant->name;
+    }
+
+    public function getCustomerNameAttribute()
+    {
+        return $this->user->name;
     }
 }

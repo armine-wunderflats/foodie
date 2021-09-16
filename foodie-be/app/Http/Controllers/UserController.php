@@ -65,7 +65,7 @@ class UserController extends Controller
     public function show($id)
     {
         try {
-            $user =  $this->user_service->getUser($id);
+            $user = $this->user_service->getUser($id);
         } catch (Exception $e) {
             if($e instanceof ModelNotFoundException) {
                 Log::warning('Get user by id, ModelNotFoundException', ['error' => $e->getMessage()]);

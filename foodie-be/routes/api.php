@@ -36,6 +36,7 @@ $api->version('v1', function ($api) {
         $api->post('restaurants/{id}/meals', 'App\Http\Controllers\RestaurantController@createMeal');
         $api->get('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@getRestaurantOrders');
         $api->post('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@createOrder');
+        $api->get('me/restaurants', 'App\Http\Controllers\RestaurantController@getUserRestaurants');
 
         $api->get('meals/{id}', 'App\Http\Controllers\MealController@show');
         $api->put('meals/{id}', 'App\Http\Controllers\MealController@update');

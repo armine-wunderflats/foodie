@@ -18,7 +18,7 @@ const restaurantSlice = createSlice({
 		getRestaurant: (state, action) => ({
 			...state,
 			loading: true,
-			current_page: action.payload.current_page,
+			current_page: action.payload?.current_page,
 		}),
 		getRestaurantSuccess: (state, action) => ({
 			...state,
@@ -107,6 +107,21 @@ export const getRestaurants = (page = 1, filter = '') => {
 		axios
 			.get(`${API_URL}/restaurants?page=${page}&filter=${filter}`)
 			.then(r => r.data)
+			.then(data => {
+				dispatch(restaurantSlice.actions.getRestaurantSuccess(data));
+			})
+			.catch(error => {
+				dispatch(restaurantSlice.actions.getRestaurantFail(error));
+			});
+	};
+};
+
+export const getOwnerRestaurants = () => {
+	return dispatch => {
+		dispatch(restaurantSlice.actions.getRestaurant());
+
+		axios
+			.get(`${API_URL}/me/restaurants`)
 			.then(data => {
 				dispatch(restaurantSlice.actions.getRestaurantSuccess(data));
 			})

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
 import { Input, FormField, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+
 import Loader from '../../components/Loader';
 import PasswordInput from '../../components/PasswordInput';
 import schema from '../../validation/loginSchema';
