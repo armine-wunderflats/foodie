@@ -1,4 +1,4 @@
-export const cashWithCommas = (num = 0) => {
+export const numberToCash = (num = 0) => {
 	return (
 		'$' +
 		num

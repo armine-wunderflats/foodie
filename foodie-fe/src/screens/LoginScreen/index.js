@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-import { Input, FormField, Button } from 'semantic-ui-react';
+import { Input, FormField, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import PasswordInput from '../../components/PasswordInput';
@@ -17,8 +17,8 @@ const LoginScreen = ({ loading, login }) => {
 	return (
 		<div id="login_screen">
 			<Loader loading={loading} />
-			<h1 className="pageTitle">Welcome to Foodie</h1>
-			<h2 className="pageTitle">Please Login to Continue</h2>
+			<h1 className="darkBlue">Welcome to Foodie</h1>
+			<h2 className="darkBlue">Please Login to Continue</h2>
 			<div className="container">
 				<Formik
 					initialValues={{
@@ -65,6 +65,7 @@ const LoginScreen = ({ loading, login }) => {
 										className="login"
 									>
 										Login
+										<Icon name="sign-in" />
 									</Button>
 								</div>
 							</Form>
@@ -73,6 +74,7 @@ const LoginScreen = ({ loading, login }) => {
 				/>
 				<Button secondary basic className="register" as={Link} to="/register">
 					Register
+					<Icon name="signup" />
 				</Button>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
-import { cashWithCommas } from '../../helpers/numberHelper';
+import { numberToCash } from '../../helpers/numberHelper';
 
 const Meals = ({ data, occurences, handleAdd, handleDeduct }) => {
 	const { innerWidth: width } = window;
@@ -14,7 +14,7 @@ const Meals = ({ data, occurences, handleAdd, handleDeduct }) => {
 						<div className="itemContainer">
 							<h3 className="itemTitle">{item.name}</h3>
 							<p>{item.description}</p>
-							<p className="itemSubtitle">{cashWithCommas(item.price)}</p>
+							<p className="itemSubtitle">{numberToCash(item.price)}</p>
 							{isAdded && <p>Number of items in cart: {occurences[item.id]}</p>}
 							<Button
 								color={isAdded ? 'green' : 'blue'}

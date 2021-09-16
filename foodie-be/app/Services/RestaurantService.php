@@ -70,7 +70,7 @@ class RestaurantService implements IRestaurantService
     public function getMealsByRestaurantId($id)
     {
         Log::info('Getting all meals by restaurant id');
-        return Restaurant::findOrfail($id)->meals()->get();
+        return Restaurant::findOrFail($id)->meals()->get();
     }
     
     /**
@@ -79,7 +79,7 @@ class RestaurantService implements IRestaurantService
     public function getRestaurantOrders($id)
     {
         Log::info('Getting all orders by restaurant id');
-        return Restaurant::findOrfail($id)->orders()->with('meals')->get();
+        return Restaurant::findOrFail($id)->orders()->with('meals')->get();
     }
 
     /**

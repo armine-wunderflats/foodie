@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Sidebar, Menu } from 'semantic-ui-react';
-import { cashWithCommas } from '../../helpers/numberHelper';
+import { numberToCash } from '../../helpers/numberHelper';
 import ConfirmationModal from './ConfirmationModal';
 
 const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
@@ -8,6 +8,7 @@ const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
 		() => cartItems?.reduce((a, b) => a + b.price * occurences[b.id], 0),
 		[cartItems]
 	);
+	const { innerWidth: width } = window;
 
 	return (
 		<Sidebar
@@ -18,17 +19,17 @@ const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
 			inverted
 			direction="right"
 			visible={visible}
-			width="thin"
+			width={width > 600 ? 'wide' : 'thin'}
 		>
 			{cartItems?.map(item => (
 				<Menu.Item>
 					<h3>{item.name}</h3>
 					<p>Quantity: {occurences[item.id]}</p>
-					<p>Unit Price: {cashWithCommas(item.price)}</p>
+					<p>Unit Price: {numberToCash(item.price)}</p>
 				</Menu.Item>
 			))}
 			<Menu.Item>
-				<h3>Total Price: {cashWithCommas(totalPrice)}</h3>
+				<h3>Total Price: {numberToCash(totalPrice)}</h3>
 				<ConfirmationModal cart={cart} />
 			</Menu.Item>
 		</Sidebar>
