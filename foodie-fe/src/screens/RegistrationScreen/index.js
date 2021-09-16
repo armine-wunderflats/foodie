@@ -17,8 +17,8 @@ const RegistrationScreen = ({ loading, history, register }) => {
 				onClick={() => history.goBack()}
 			/>
 			<Loader loading={loading} />
-			<h1 className="pageTitle">Welcome to Foodie</h1>
-			<h2 className="pageTitle">Please Register to Continue</h2>
+			<h1 className="darkBlue">Welcome to Foodie</h1>
+			<h2 className="darkBlue">Please Register to Continue</h2>
 			<RegistrationForm onSubmit={onSubmit} />
 		</div>
 	);

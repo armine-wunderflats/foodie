@@ -48,7 +48,7 @@ const RestaurantScreen = props => {
 		setCart([...cart]);
 	};
 
-	if (!restaurant) return <Loader loading={!restaurant} />;
+	if (!restaurant) return <Loader />;
 
 	return (
 		<div id="restaurant_screen">
@@ -58,8 +58,8 @@ const RestaurantScreen = props => {
 				className="floatLeft goBack"
 				onClick={() => history.goBack()}
 			/>
-			<h1 className="pageTitle">{restaurant.name}</h1>
-			<h2 className="pageTitle">{restaurant.food_type}</h2>
+			<h1 className="darkBlue">{restaurant.name}</h1>
+			<h2 className="darkBlue">{restaurant.food_type}</h2>
 			<div className="container">
 				<p>{restaurant.description}</p>
 				<Button

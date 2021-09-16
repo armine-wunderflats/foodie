@@ -17,7 +17,7 @@ class OrderService implements IOrderService
     public function getOrdersByUser($user)
     {
         Log::info('Getting all orders by user');
-        return $user->orders()->get();
+        return $user->orders()->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -26,7 +26,7 @@ class OrderService implements IOrderService
     public function getOrdersByRestaurantId($id)
     {
         Log::info('Getting all orders by restaurant id');
-        return Restaurant::findOrfail($id)->orders()->get();
+        return Restaurant::findOrFail($id)->orders()->orderBy('created_at', 'desc')->get();
     }
 
     /**

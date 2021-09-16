@@ -18,7 +18,6 @@ const ConfirmationModal = ({ loading, submissionError, cart, createOrder }) => {
 	const history = useHistory();
 	const [open, setOpen] = useState(false);
 	const [form, setForm] = useState({
-		mealIds: cart,
 		address: '',
 		instructions: '',
 	});
@@ -30,7 +29,7 @@ const ConfirmationModal = ({ loading, submissionError, cart, createOrder }) => {
 	const onSubmit = () => {
 		if (form.address.trim() === '') return setError(true);
 		setError(false);
-		createOrder(id, form);
+		createOrder(id, { ...form, mealIds: cart });
 	};
 
 	useEffect(() => {

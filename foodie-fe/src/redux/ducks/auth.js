@@ -2,14 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { API_URL } from '../../config';
-import { getToken, getIsAdmin, removeAuth, setAuth } from '../../helpers/auth';
+import { getToken, removeAuth, setAuth } from '../../helpers/auth';
 
 const initialState = {
 	loading: false,
 	isAuthenticated: undefined,
 	user: null,
 	error: null,
-	isAdmin: null,
 };
 
 const authSlice = createSlice({
@@ -26,14 +25,12 @@ const authSlice = createSlice({
 			error: null,
 			isAuthenticated: true,
 			user: action.payload,
-			isAdmin: action.payload.is_admin,
 		}),
 		loginFail: (state, action) => ({
 			...state,
 			loading: false,
 			error: action.payload,
 			isAuthenticated: false,
-			isAdmin: null,
 		}),
 		register: state => ({
 			...state,
@@ -44,24 +41,20 @@ const authSlice = createSlice({
 			loading: false,
 			error: null,
 			isAuthenticated: true,
-			isAdmin: action.payload.is_admin,
 		}),
 		registerFail: (state, action) => ({
 			...state,
 			loading: false,
 			error: action.payload,
 			isAuthenticated: false,
-			isAdmin: null,
 		}),
 		authenticate: (state, action) => ({
 			...state,
 			isAuthenticated: true,
-			isAdmin: action.payload,
 		}),
 		clearAuthentication: state => ({
 			...state,
 			isAuthenticated: false,
-			isAdmin: null,
 		}),
 	},
 });
@@ -71,13 +64,12 @@ const authReducer = authSlice.reducer;
 export const authenticate = () => {
 	return dispatch => {
 		const token = getToken();
-		const isAdmin = getIsAdmin();
 
 		if (!token) {
 			return dispatch(clearAuthentication());
 		}
 
-		dispatch(authSlice.actions.authenticate(isAdmin));
+		dispatch(authSlice.actions.authenticate());
 	};
 };
 

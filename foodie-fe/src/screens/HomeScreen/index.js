@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Button, Icon, Input, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import { getRestaurants } from '../../redux/ducks/restaurant';
 import debounce from 'lodash.debounce';
+import MenuDrawer from './MenuDrawer';
 
 const Restaurants = ({ data }) => {
 	const { innerWidth: width } = window;
@@ -34,6 +35,7 @@ const Restaurants = ({ data }) => {
 
 const HomeScreen = props => {
 	const { restaurantList, getRestaurants } = props;
+	const [visible, setVisible] = useState(false);
 	const debouncedgetRestaurants = useCallback(
 		debounce(
 			(current_page, filter) => getRestaurants(current_page, filter),
@@ -49,16 +51,15 @@ const HomeScreen = props => {
 
 	useEffect(() => getRestaurants(props.current_page), []);
 
-	if (!restaurantList || !restaurantList.data)
-		return <Loader loading={!restaurantList || !restaurantList.data} />;
+	if (!restaurantList || !restaurantList.data) return <Loader />;
 	const { current_page, last_page, data } = restaurantList;
 
 	return (
 		<div id="home_screen">
-			<h1 className="container pageTitle">
+			<h1 className="container darkBlue">
 				Restaurants
-				<Button className="profile" as={Link} to={`/profile`}>
-					<Icon className="icon" name="user" size="large" />
+				<Button className="profile" onClick={() => setVisible(true)}>
+					<Icon className="icon" name="bars" size="large" />
 				</Button>
 			</h1>
 			<div className="container">
@@ -90,6 +91,7 @@ const HomeScreen = props => {
 					</Button>
 				)}
 			</div>
+			<MenuDrawer visible={visible} setVisible={setVisible} />
 		</div>
 	);
 };

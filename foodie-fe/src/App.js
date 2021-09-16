@@ -9,6 +9,8 @@ import HomeScreen from './screens/HomeScreen/index.js';
 import LoginScreen from './screens/LoginScreen/index.js';
 import RestaurantScreen from './screens/RestaurantScreen/index.js';
 import RegistrationScreen from './screens/RegistrationScreen/index.js';
+import OrderScreen from './screens/OrderScreen/index.js';
+import SingleOrder from './screens/OrderScreen/SingleOrder.js';
 
 const App = ({ authenticate }) => {
 	useEffect(() => {
@@ -32,13 +34,31 @@ const App = ({ authenticate }) => {
 				/>
 				<AuthenticationRoute
 					path="/restaurants/:id"
-					withAuth={true}
+					withAuth
 					component={RestaurantScreen}
 					redirectOnFailure="/login"
 				/>
 				<AuthenticationRoute
+					path="/restaurants/:id/orders"
+					withAuth
+					component={OrderScreen}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
+					path="/orders/:id"
+					withAuth
+					component={SingleOrder}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
+					path="/orders"
+					withAuth
+					component={OrderScreen}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
 					path="/"
-					withAuth={true}
+					withAuth
 					component={HomeScreen}
 					redirectOnFailure="/login"
 				/>

@@ -40,13 +40,21 @@
 	float: left;
 }
 
+.alignLeft {
+	text-align: left;
+}
+
+.alightRight {
+	text-align: right;
+}
+
 .container {
 	margin-top: 20px;
 	max-width: 800px;
 	margin: 10px auto;
 }
 
-.pageTitle {
+.darkBlue {
 	color: #03365c;
 }
 
@@ -56,6 +64,7 @@
 
 .arrow.left.goBack {
 	color: #767779;
+	margin-right: -21px;
 }
 
 .arrow.left.goBack:hover {
@@ -99,6 +108,10 @@
 	width: 300px;
 }
 
+#login_screen .icon {
+	margin-left: 10px;
+}
+
 .login_container,
 .auth_container {
 	margin: 30px;
@@ -134,8 +147,24 @@
 	margin-left: 10px;
 }
 
-#home_screen .search.icon {
-	margin-top: 10px;
+#home_screen .menuDrawer {
+	padding: 20px 0;
+}
+
+#home_screen .menuItem {
+	padding: 30px;
+	display: flex;
+	font-size: 17px;
+	line-height: 25px;
+}
+
+#home_screen .menuItem i {
+	margin: 0;
+	margin-right: 15px;
+}
+
+#home_screen .logout {
+	margin: 50px 20px;
 }
 
 #home_screen .container .button,
@@ -178,10 +207,45 @@
 	margin-left: 5px;
 }
 
-#home_screen input,
-#home_screen textarea {
-	margin-top: 20px;
-	width: auto;
+#order_screen {
+	align-items: center;
+}
+
+#order_screen .button {
+	padding: 20px;
+	height: 58px;
+	width: 100%;
+}
+
+#single_order_screen .item {
+	padding: 20px;
+	margin: 10px 0;
+	background-color: #e0e1e2;
+	border-radius: 4px;
+}
+
+#single_order_screen .orderInfo {
+	color: #03365c;
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 15px;
+}
+
+#single_order_screen .mealInfo {
+	color: #04497d;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#single_order_screen .extraInfo {
+	font-size: 15px;
+	font-weight: 500;
+	margin: 0;
+}
+
+#single_order_screen .statusButton {
+	display: flex;
+	justify-content: flex-end;
 }
 
 @keyframes App-logo-spin {
@@ -192,6 +256,7 @@
 		transform: rotate(360deg);
 	}
 }
+
 @media only screen and (max-width: 600px) {
 	#home_screen .container .input {
 		margin: 0 20px;
@@ -202,5 +267,17 @@
 	}
 	#home_screen .icon {
 		margin-left: -10px;
+	}
+
+	#home_screen .menuDrawer {
+		padding: 10px 0;
+	}
+
+	#home_screen .logout {
+		width: auto;
+	}
+
+	#home_screen .logout i {
+		display: none;
 	}
 }

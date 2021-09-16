@@ -15,17 +15,17 @@ const orderSlice = createSlice({
 	name: 'order',
 	initialState,
 	reducers: {
-		getUserOrders: (state, action) => ({
+		getOrders: (state, action) => ({
 			...state,
 			loading: true,
 		}),
-		getUserOrdersSuccess: (state, action) => ({
+		getOrdersSuccess: (state, action) => ({
 			...state,
 			loading: false,
 			error: null,
 			orderList: action.payload,
 		}),
-		getUserOrdersFail: (state, action) => ({
+		getOrdersFail: (state, action) => ({
 			...state,
 			loading: false,
 			error: action.payload,
@@ -85,16 +85,32 @@ const orderReducer = orderSlice.reducer;
 
 export const getUserOrders = () => {
 	return dispatch => {
-		dispatch(orderSlice.actions.getOrder());
+		dispatch(orderSlice.actions.getOrders());
 
 		axios
 			.get(`${API_URL}/orders`)
 			.then(r => r.data)
 			.then(data => {
-				dispatch(orderSlice.actions.getOrderSuccess(data));
+				dispatch(orderSlice.actions.getOrdersSuccess(data));
 			})
 			.catch(error => {
-				dispatch(orderSlice.actions.getOrderFail(error));
+				dispatch(orderSlice.actions.getOrdersFail(error));
+			});
+	};
+};
+
+export const getRestaurantOrders = id => {
+	return dispatch => {
+		dispatch(orderSlice.actions.getOrders());
+
+		axios
+			.get(`${API_URL}restaurants/${id}/orders`)
+			.then(r => r.data)
+			.then(data => {
+				dispatch(orderSlice.actions.getOrdersSuccess(data));
+			})
+			.catch(error => {
+				dispatch(orderSlice.actions.getOrdersFail(error));
 			});
 	};
 };
@@ -134,12 +150,12 @@ export const createOrder = (id, data) => {
 	};
 };
 
-export const updateOrderStatus = (id, data) => {
+export const updateOrderStatus = id => {
 	return dispatch => {
 		dispatch(orderSlice.actions.updateOrderStatus());
 
 		axios
-			.put(`${API_URL}/orders/${id}`, data)
+			.put(`${API_URL}/orders/${id}/status`, {})
 			.then(r => r.data)
 			.then(data => {
 				dispatch(orderSlice.actions.updateOrderStatusSuccess(data));

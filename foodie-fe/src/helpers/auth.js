@@ -3,23 +3,12 @@ import axios from 'axios';
 import store from '../redux/store';
 import { clearAuthentication } from '../redux/ducks/auth';
 
-export const setAuth = (token, isAdmin) => {
-	localStorage.setItem(constants.token, token);
-	localStorage.setItem(constants.isAdmin, isAdmin);
-};
-
+export const setAuth = token => localStorage.setItem(constants.token, token);
 export const getToken = () => localStorage.getItem(constants.token);
-export const getIsAdmin = () => localStorage.getItem(constants.isAdmin);
-
-export const removeAuth = () => {
-	localStorage.removeItem(constants.token);
-	localStorage.removeItem(constants.isAdmin);
-};
-
+export const removeAuth = () => localStorage.removeItem(constants.token);
 export const getAuthHeader = () => {
 	return { Authorization: `Bearer ${getToken()}` };
 };
-
 export const isAuthenticated = () => !!getToken();
 
 axios.interceptors.request.use(
