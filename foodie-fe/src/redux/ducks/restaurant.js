@@ -5,7 +5,6 @@ import { API_URL } from '../../config';
 
 const initialState = {
 	loading: false,
-	error: null,
 	restaurant: null,
 	restaurantList: null,
 	current_page: 1,
@@ -23,13 +22,11 @@ const restaurantSlice = createSlice({
 		getRestaurantSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			restaurantList: action.payload,
 		}),
-		getRestaurantFail: (state, action) => ({
+		getRestaurantFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		getRestaurantById: state => ({
 			...state,
@@ -39,13 +36,11 @@ const restaurantSlice = createSlice({
 		getRestaurantByIdSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			restaurant: action.payload,
 		}),
-		getRestaurantByIdFail: (state, action) => ({
+		getRestaurantByIdFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		updateRestaurant: state => ({
 			...state,
@@ -55,13 +50,11 @@ const restaurantSlice = createSlice({
 		updateRestaurantSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			restaurant: action.payload,
 		}),
-		updateRestaurantFail: (state, action) => ({
+		updateRestaurantFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		deleteRestaurantById: state => ({
 			...state,
@@ -71,13 +64,11 @@ const restaurantSlice = createSlice({
 		deleteRestaurantByIdSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			restaurant: action.payload,
 		}),
-		deleteRestaurantByIdFail: (state, action) => ({
+		deleteRestaurantByIdFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		createRestaurant: state => ({
 			...state,
@@ -87,13 +78,11 @@ const restaurantSlice = createSlice({
 		createRestaurantSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			restaurant: action.payload,
 		}),
-		createRestaurantFail: (state, action) => ({
+		createRestaurantFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 	},
 });
@@ -111,7 +100,7 @@ export const getRestaurants = (page = 1, filter = '') => {
 				dispatch(restaurantSlice.actions.getRestaurantSuccess(data));
 			})
 			.catch(error => {
-				dispatch(restaurantSlice.actions.getRestaurantFail(error));
+				dispatch(restaurantSlice.actions.getRestaurantFail());
 			});
 	};
 };
@@ -126,7 +115,7 @@ export const getOwnerRestaurants = () => {
 				dispatch(restaurantSlice.actions.getRestaurantSuccess(data));
 			})
 			.catch(error => {
-				dispatch(restaurantSlice.actions.getRestaurantFail(error));
+				dispatch(restaurantSlice.actions.getRestaurantFail());
 			});
 	};
 };
@@ -142,7 +131,7 @@ export const getRestaurantById = id => {
 				dispatch(restaurantSlice.actions.getRestaurantByIdSuccess(data));
 			})
 			.catch(error => {
-				dispatch(restaurantSlice.actions.getRestaurantByIdFail(error));
+				dispatch(restaurantSlice.actions.getRestaurantByIdFail());
 			});
 	};
 };
@@ -159,7 +148,7 @@ export const deleteRestaurantById = id => {
 			})
 			.catch(error => {
 				toast.error('Restaurant deletion failed');
-				dispatch(restaurantSlice.actions.deleteRestaurantByIdFail(error));
+				dispatch(restaurantSlice.actions.deleteRestaurantByIdFail());
 			});
 	};
 };
@@ -177,7 +166,7 @@ export const createRestaurant = data => {
 			})
 			.catch(error => {
 				toast.error('Restaurant creation failed');
-				dispatch(restaurantSlice.actions.createRestaurantFail(error));
+				dispatch(restaurantSlice.actions.createRestaurantFail());
 			});
 	};
 };
@@ -195,7 +184,7 @@ export const updateRestaurant = (id, data) => {
 			})
 			.catch(error => {
 				toast.error('Restaurant update failed');
-				dispatch(restaurantSlice.actions.updateRestaurantFail(error));
+				dispatch(restaurantSlice.actions.updateRestaurantFail());
 			});
 	};
 };

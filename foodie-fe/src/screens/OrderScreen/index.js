@@ -31,13 +31,12 @@ const OrderScreen = props => {
 		else if (id && user.is_owner) getRestaurantOrders(id);
 	}, [user, id]);
 
-	if (loading || !user || !orders) {
-		return <Loader />;
-	}
+	if (loading || !user || !orders) return <Loader />;
+	const backUrl = user.is_customer ? '/' : `/restaurants/${id}`;
 
 	return (
 		<div id="order_screen">
-			<Link to="/">
+			<Link to={backUrl}>
 				<Icon name="arrow left" size="large" className="floatLeft goBack" />
 			</Link>
 			<h1 className="clear darkBlue">Orders</h1>

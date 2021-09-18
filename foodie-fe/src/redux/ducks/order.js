@@ -6,7 +6,6 @@ import constants from '../../constants';
 
 const initialState = {
 	loading: false,
-	error: null,
 	order: null,
 	orderList: null,
 };
@@ -15,20 +14,18 @@ const orderSlice = createSlice({
 	name: 'order',
 	initialState,
 	reducers: {
-		getOrders: (state, action) => ({
+		getOrders: state => ({
 			...state,
 			loading: true,
 		}),
 		getOrdersSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			orderList: action.payload,
 		}),
-		getOrdersFail: (state, action) => ({
+		getOrdersFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		getOrderById: state => ({
 			...state,
@@ -38,13 +35,11 @@ const orderSlice = createSlice({
 		getOrderByIdSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			order: action.payload,
 		}),
-		getOrderByIdFail: (state, action) => ({
+		getOrderByIdFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		updateOrderStatus: state => ({
 			...state,
@@ -54,13 +49,11 @@ const orderSlice = createSlice({
 		updateOrderStatusSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			order: action.payload,
 		}),
-		updateOrderStatusFail: (state, action) => ({
+		updateOrderStatusFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		createOrder: state => ({
 			...state,
@@ -70,13 +63,11 @@ const orderSlice = createSlice({
 		createOrderSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			order: action.payload,
 		}),
-		createOrderFail: (state, action) => ({
+		createOrderFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 	},
 });
@@ -94,7 +85,7 @@ export const getUserOrders = () => {
 				dispatch(orderSlice.actions.getOrdersSuccess(data));
 			})
 			.catch(error => {
-				dispatch(orderSlice.actions.getOrdersFail(error));
+				dispatch(orderSlice.actions.getOrdersFail());
 			});
 	};
 };
@@ -110,7 +101,7 @@ export const getRestaurantOrders = id => {
 				dispatch(orderSlice.actions.getOrdersSuccess(data));
 			})
 			.catch(error => {
-				dispatch(orderSlice.actions.getOrdersFail(error));
+				dispatch(orderSlice.actions.getOrdersFail());
 			});
 	};
 };
@@ -126,7 +117,7 @@ export const getOrderById = id => {
 				dispatch(orderSlice.actions.getOrderByIdSuccess(data));
 			})
 			.catch(error => {
-				dispatch(orderSlice.actions.getOrderByIdFail(error));
+				dispatch(orderSlice.actions.getOrderByIdFail());
 			});
 	};
 };
@@ -145,7 +136,7 @@ export const createOrder = (id, data) => {
 			})
 			.catch(error => {
 				toast.error('Order creation failed');
-				dispatch(orderSlice.actions.createOrderFail(error));
+				dispatch(orderSlice.actions.createOrderFail());
 			});
 	};
 };
@@ -163,7 +154,7 @@ export const updateOrderStatus = id => {
 			})
 			.catch(error => {
 				toast.error('Order update failed');
-				dispatch(orderSlice.actions.updateOrderStatusFail(error));
+				dispatch(orderSlice.actions.updateOrderStatusFail());
 			});
 	};
 };

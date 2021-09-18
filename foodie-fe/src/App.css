@@ -3,6 +3,9 @@
 	background-color: #efefef;
 	min-height: 100vh;
 	align-items: center;
+}
+
+.App > div {
 	padding: 30px 20px;
 }
 
@@ -48,10 +51,18 @@
 	text-align: right;
 }
 
+div.ui.icon.input {
+	margin-left: 0 !important;
+}
+
 .container {
-	margin-top: 20px;
 	max-width: 800px;
 	margin: 10px auto;
+}
+
+.pageTitle {
+	color: #03365c;
+	margin: 20px;
 }
 
 .darkBlue {
@@ -110,6 +121,7 @@
 .emptyList {
 	margin-top: 50px !important;
 	color: gray;
+	width: 100%;
 }
 
 .toggle {
@@ -127,12 +139,12 @@
 
 #login_screen .login {
 	margin-top: 20px;
-	width: 300px;
+	width: 200px;
 }
 
 #login_screen .register {
 	margin-bottom: 20px;
-	width: 300px;
+	width: 200px;
 }
 
 #login_screen .icon {
@@ -190,13 +202,7 @@
 	border-radius: 4px;
 	padding: 20px;
 	margin-top: 20px;
-}
-
-#restaurant_screen .itemContainer {
-	background-color: #e0e1e2;
-	border-radius: 4px;
-	padding: 20px;
-	margin-top: 20px;
+	width: 100%;
 }
 
 #restaurant_screen .itemSubtitle {
@@ -304,5 +310,10 @@
 
 	#order_screen .orderInfo span {
 		margin: 0 10px;
+	}
+
+	.menuItem {
+		padding: 20px !important;
+		font-size: 15px !important;
 	}
 }

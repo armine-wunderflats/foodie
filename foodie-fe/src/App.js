@@ -13,6 +13,8 @@ import OrderScreen from './screens/OrderScreen/index.js';
 import SingleOrder from './screens/OrderScreen/SingleOrder.js';
 import CreateRestaurantScreen from './screens/CreateRestaurantScreen/index.js';
 import EditRestaurantScreen from './screens/EditRestaurantScreen/index.js';
+import CreateMealScreen from './screens/CreateMealScreen/index.js';
+import EditMealScreen from './screens/EditMealScreen/index.js';
 
 const App = ({ authenticate }) => {
 	useEffect(() => {
@@ -44,6 +46,18 @@ const App = ({ authenticate }) => {
 					path="/restaurants/create"
 					withAuth
 					component={CreateRestaurantScreen}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
+					path="/restaurants/:id/meals/create"
+					withAuth
+					component={CreateMealScreen}
+					redirectOnFailure="/login"
+				/>
+				<AuthenticationRoute
+					path="/restaurants/:id/meals/:mealId/edit"
+					withAuth
+					component={EditMealScreen}
 					redirectOnFailure="/login"
 				/>
 				<AuthenticationRoute

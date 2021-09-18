@@ -8,7 +8,6 @@ const initialState = {
 	loading: false,
 	isAuthenticated: undefined,
 	user: null,
-	error: null,
 };
 
 const authSlice = createSlice({
@@ -22,14 +21,12 @@ const authSlice = createSlice({
 		loginSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			isAuthenticated: true,
 			user: action.payload,
 		}),
 		loginFail: (state, action) => ({
 			...state,
 			loading: false,
-			error: action.payload,
 			isAuthenticated: false,
 		}),
 		register: state => ({
@@ -39,13 +36,11 @@ const authSlice = createSlice({
 		registerSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			isAuthenticated: true,
 		}),
 		registerFail: (state, action) => ({
 			...state,
 			loading: false,
-			error: action.payload,
 			isAuthenticated: false,
 		}),
 		authenticate: (state, action) => ({
@@ -100,7 +95,7 @@ export const login = data => {
 				}
 			})
 			.catch(error => {
-				dispatch(authSlice.actions.loginFail(error));
+				dispatch(authSlice.actions.loginFail());
 				toast.error(error.response?.data?.message);
 			});
 	};
@@ -124,7 +119,7 @@ export const register = data => {
 				}
 			})
 			.catch(error => {
-				dispatch(authSlice.actions.registerFail(error));
+				dispatch(authSlice.actions.registerFail());
 				const emailError = error.response?.data.errors?.email;
 				if (emailError) return toast.error(emailError[0]);
 

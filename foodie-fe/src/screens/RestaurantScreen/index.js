@@ -61,7 +61,7 @@ const RestaurantScreen = props => {
 			<Link to="/">
 				<Icon name="arrow left" size="large" className="floatLeft goBack" />
 			</Link>
-			<h1 className="darkBlue">{restaurant.name}</h1>
+			<h1 className="pageTitle">{restaurant.name}</h1>
 			<h2 className="darkBlue">{restaurant.food_type}</h2>
 			<div className="container">
 				<p>{restaurant.description}</p>
@@ -86,6 +86,7 @@ const RestaurantScreen = props => {
 					handleDeduct={handleDeduct}
 					occurences={occurences}
 					isCustomer={isCustomer}
+					isOwner={isOwner}
 				/>
 			</div>
 			{isCustomer && (

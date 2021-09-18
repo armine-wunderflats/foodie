@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-import { Input, FormField, Button, TextArea, Icon } from 'semantic-ui-react';
+import {
+	Input,
+	FormField,
+	Button,
+	TextArea,
+	Icon,
+	Label,
+} from 'semantic-ui-react';
 import { useHistory, Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import Loader from './Loader';
 import Validation from '../validation';
 
-const RestaurantForm = ({
+const MealForm = ({
 	loading,
-	restaurant,
+	meal,
 	onSubmit,
 	schema,
 	title,
@@ -18,34 +25,34 @@ const RestaurantForm = ({
 	isEdit,
 }) => {
 	const history = useHistory();
-	const { id } = useParams();
 	const [submitted, setSubmitted] = useState(false);
+	const { id } = useParams();
 	useEffect(() => {
-		if (!restaurant || !submitted) return;
+		if (!meal || !submitted) return;
 
-		history.push(`/restaurants/${restaurant.id}`);
-	}, [restaurant]);
+		history.push(`/restaurants/${id}`);
+	}, [meal]);
 
 	const handleSubmit = data => {
 		setSubmitted(true);
 		onSubmit(data);
 	};
 
-	if (!restaurant && isEdit) return <Loader loading />;
+	if (!meal && isEdit) return <Loader loading />;
 
 	return (
-		<div id="restaurant_form">
+		<div id="meal_form">
 			<Loader loading={loading} />
-			<Link to={isEdit ? `/restaurants/${id}` : '/'}>
+			<Link to={`/restaurants/${id}`}>
 				<Icon name="arrow left" size="large" className="floatLeft goBack" />
 			</Link>
 			<h1 className="pageTitle">{title}</h1>
 			<div className="container">
 				<Formik
 					initialValues={{
-						name: isEdit ? restaurant?.name : '',
-						food_type: isEdit ? restaurant?.food_type : '',
-						description: isEdit ? restaurant?.description || '' : '',
+						name: isEdit ? meal?.name : '',
+						price: isEdit ? meal?.price : 0,
+						description: isEdit ? meal?.description || '' : '',
 					}}
 					validationSchema={schema}
 					onSubmit={handleSubmit}
@@ -58,18 +65,25 @@ const RestaurantForm = ({
 									<div>
 										<FormField>
 											<label htmlFor="name" className="label">
-												<span>Restaurant Name</span>
+												<span>Meal Name</span>
 											</label>
 											<Validation name="name" showMessage={true}>
 												<Input value={values.name} name="name" />
 											</Validation>
 										</FormField>
 										<FormField>
-											<label htmlFor="food_type" className="label">
-												<span>Food Type</span>
+											<label htmlFor="price" className="label">
+												<span>Price</span>
 											</label>
-											<Validation name="food_type" showMessage={true}>
-												<Input value={values.food_type} name="food_type" />
+											<Validation name="price" showMessage={true}>
+												<Input
+													labelPosition="right"
+													value={values.price}
+													name="price"
+													type="number"
+												>
+													<Label basic>$</Label> <input />
+												</Input>
 											</Validation>
 										</FormField>
 										<FormField>
@@ -98,8 +112,8 @@ const RestaurantForm = ({
 };
 
 const mapStateToProps = state => ({
-	loading: state.restaurant.loading,
-	restaurant: state.restaurant.restaurant,
+	loading: state.meal.loading,
+	meal: state.meal.meal,
 });
 
-export default connect(mapStateToProps)(RestaurantForm);
+export default connect(mapStateToProps)(MealForm);

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Loader from '../../components/Loader';
 import schema from '../../validation/restaurantSchema';
 import {
 	updateRestaurant,

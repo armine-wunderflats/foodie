@@ -1,9 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Button, Grid } from 'semantic-ui-react';
 import { numberToCash } from '../../helpers/numberHelper';
 
-const Meals = ({ data, occurences, handleAdd, handleDeduct, isCustomer }) => {
+const Meals = ({
+	data,
+	occurences,
+	handleAdd,
+	handleDeduct,
+	isCustomer,
+	isOwner,
+}) => {
 	const { innerWidth: width } = window;
+	const { id } = useParams();
 	const AddToCartButtons = ({ item }) => {
 		if (!isCustomer) return <></>;
 
@@ -38,14 +48,27 @@ const Meals = ({ data, occurences, handleAdd, handleDeduct, isCustomer }) => {
 					<h3 className="emptyList">There aren't any meals yet</h3>
 				))}
 			{data?.map(item => {
+				const content = (
+					<>
+						<h3 className="itemTitle">{item.name}</h3>
+						<p>{item.description}</p>
+						<p className="itemSubtitle">{numberToCash(item.price)}</p>
+						<AddToCartButtons item={item} />
+					</>
+				);
 				return (
 					<Grid.Column key={item.id}>
-						<div className="itemContainer">
-							<h3 className="itemTitle">{item.name}</h3>
-							<p>{item.description}</p>
-							<p className="itemSubtitle">{numberToCash(item.price)}</p>
-							<AddToCartButtons item={item} />
-						</div>
+						{isOwner ? (
+							<Button
+								className="itemContainer"
+								as={Link}
+								to={`/restaurants/${id}/meals/${item.id}/edit`}
+							>
+								{content}
+							</Button>
+						) : (
+							<div className="itemContainer">{content}</div>
+						)}
 					</Grid.Column>
 				);
 			})}

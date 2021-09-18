@@ -5,7 +5,6 @@ import { API_URL } from '../../config';
 
 const initialState = {
 	loading: false,
-	error: null,
 	currentUser: null,
 };
 
@@ -21,13 +20,11 @@ const userSlice = createSlice({
 		getCurrentUserSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			currentUser: action.payload,
 		}),
-		getCurrentUserFail: (state, action) => ({
+		getCurrentUserFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 		updateUser: state => ({
 			...state,
@@ -37,13 +34,11 @@ const userSlice = createSlice({
 		updateUserSuccess: (state, action) => ({
 			...state,
 			loading: false,
-			error: null,
 			currentUser: action.payload,
 		}),
-		updateUserFail: (state, action) => ({
+		updateUserFail: state => ({
 			...state,
 			loading: false,
-			error: action.payload,
 		}),
 	},
 });
@@ -61,7 +56,7 @@ export const getCurrentUser = () => {
 				dispatch(userSlice.actions.getCurrentUserSuccess(data));
 			})
 			.catch(error => {
-				dispatch(userSlice.actions.getCurrentUserFail(error));
+				dispatch(userSlice.actions.getCurrentUserFail());
 			});
 	};
 };
@@ -78,7 +73,7 @@ export const updateUser = (id, data) => {
 				toast.success('User update successful');
 			})
 			.catch(error => {
-				dispatch(userSlice.actions.updateUserFail(error));
+				dispatch(userSlice.actions.updateUserFail());
 				toast.error('User update failed');
 			});
 	};

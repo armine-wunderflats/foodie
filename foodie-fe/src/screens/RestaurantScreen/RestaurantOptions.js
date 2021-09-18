@@ -26,7 +26,7 @@ const RestaurantOptions = ({ visible, setVisible, restaurant }) => {
 				Edit Restaurant
 			</Menu.Item>
 			<Menu.Item
-				to={`/restaurants/${restaurant.id}/meal`}
+				to={`/restaurants/${restaurant.id}/meals/create`}
 				as={Link}
 				className="menuItem"
 			>
