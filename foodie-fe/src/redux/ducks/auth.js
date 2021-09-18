@@ -52,7 +52,7 @@ const authSlice = createSlice({
 			...state,
 			isAuthenticated: true,
 		}),
-		clearAuthentication: state => ({
+		logout: state => ({
 			...state,
 			isAuthenticated: false,
 		}),
@@ -66,18 +66,18 @@ export const authenticate = () => {
 		const token = getToken();
 
 		if (!token) {
-			return dispatch(clearAuthentication());
+			return dispatch(logout());
 		}
 
 		dispatch(authSlice.actions.authenticate());
 	};
 };
 
-export const clearAuthentication = () => {
+export const logout = () => {
 	removeAuth();
 
 	return dispatch => {
-		dispatch(authSlice.actions.clearAuthentication());
+		dispatch(authSlice.actions.logout());
 	};
 };
 
@@ -89,19 +89,19 @@ export const login = data => {
 			.post(`${API_URL}/login`, data)
 			.then(r => r.data)
 			.then(data => {
-				const { token, user, error } = data;
+				const { token, user, message } = data;
 
 				if (token) {
-					setAuth(token, user.is_admin);
+					setAuth(token);
 					dispatch(authSlice.actions.loginSuccess(user));
-				} else if (error) {
-					toast.error(error);
-					dispatch(authSlice.actions.loginFail(error));
+				} else if (message) {
+					toast.error(message);
+					dispatch(authSlice.actions.loginFail(message));
 				}
 			})
 			.catch(error => {
-				toast.error(error.response?.data?.message);
 				dispatch(authSlice.actions.loginFail(error));
+				toast.error(error.response?.data?.message);
 			});
 	};
 };
@@ -113,19 +113,22 @@ export const register = data => {
 		axios
 			.post(`${API_URL}/register`, data)
 			.then(r => r.data)
-			.then(data => {
-				const { token, user, error } = data;
-
+			.then(r => {
+				const { token, data, message } = r;
 				if (token) {
-					setAuth(token, user.is_admin);
-					dispatch(authSlice.actions.registerSuccess(user));
-				} else if (error) {
-					toast.error(error);
-					dispatch(authSlice.actions.registerFail(error));
+					setAuth(token);
+					dispatch(authSlice.actions.registerSuccess(data));
+				} else if (message) {
+					toast.error(message);
+					dispatch(authSlice.actions.registerFail(message));
 				}
 			})
 			.catch(error => {
 				dispatch(authSlice.actions.registerFail(error));
+				const emailError = error.response?.data.errors?.email;
+				if (emailError) return toast.error(emailError[0]);
+
+				toast.error('Registration failed');
 			});
 	};
 };

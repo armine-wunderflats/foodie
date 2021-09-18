@@ -14,7 +14,6 @@ const OrderScreen = props => {
 		orders,
 		loading,
 		user,
-		history,
 		getCurrentUser,
 		getUserOrders,
 		getRestaurantOrders,
@@ -26,10 +25,10 @@ const OrderScreen = props => {
 	}, []);
 
 	useEffect(() => {
-		if (!user || !id) return;
+		if (!user) return;
 
 		if (user.is_customer) getUserOrders();
-		else if (user.is_owner) getRestaurantOrders(id);
+		else if (id && user.is_owner) getRestaurantOrders(id);
 	}, [user, id]);
 
 	if (loading || !user || !orders) {
@@ -38,12 +37,9 @@ const OrderScreen = props => {
 
 	return (
 		<div id="order_screen">
-			<Icon
-				name="arrow left"
-				size="large"
-				className="floatLeft goBack"
-				onClick={() => history.goBack()}
-			/>
+			<Link to="/">
+				<Icon name="arrow left" size="large" className="floatLeft goBack" />
+			</Link>
 			<h1 className="clear darkBlue">Orders</h1>
 			<div className="container">
 				<div className="ui list">

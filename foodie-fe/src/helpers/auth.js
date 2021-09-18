@@ -1,7 +1,7 @@
 import constants from '../constants';
 import axios from 'axios';
 import store from '../redux/store';
-import { clearAuthentication } from '../redux/ducks/auth';
+import { logout } from '../redux/ducks/auth';
 
 export const setAuth = token => localStorage.setItem(constants.token, token);
 export const getToken = () => localStorage.getItem(constants.token);
@@ -29,7 +29,7 @@ axios.interceptors.response.use(
 	response => response,
 	async error => {
 		if (error.config && error.response && error.response.status === 401) {
-			store.dispatch(clearAuthentication());
+			store.dispatch(logout());
 		}
 
 		return Promise.reject(error);

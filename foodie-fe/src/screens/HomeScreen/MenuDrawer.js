@@ -5,17 +5,10 @@ import { Link } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
 import { getCurrentUser } from '../../redux/ducks/user';
-import { clearAuthentication } from '../../redux/ducks/auth';
+import { logout } from '../../redux/ducks/auth';
 
 const MenuDrawer = props => {
-	const {
-		loading,
-		visible,
-		setVisible,
-		user,
-		getCurrentUser,
-		clearAuthentication,
-	} = props;
+	const { loading, visible, setVisible, user, getCurrentUser, logout } = props;
 	useEffect(() => {
 		!user && getCurrentUser();
 	}, []);
@@ -50,7 +43,7 @@ const MenuDrawer = props => {
 					Add Restaurant
 				</Menu.Item>
 			)}
-			<Button className="logout" primary onClick={clearAuthentication}>
+			<Button className="logout" primary onClick={logout}>
 				Log Out
 				<Icon name="sign-out" />
 			</Button>
@@ -65,7 +58,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	getCurrentUser: () => dispatch(getCurrentUser()),
-	clearAuthentication: () => dispatch(clearAuthentication()),
+	logout: () => dispatch(logout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuDrawer);

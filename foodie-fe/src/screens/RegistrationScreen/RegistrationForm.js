@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Formik, Form } from 'formik';
 import { Input, FormField, Button } from 'semantic-ui-react';
-import PasswordInput from './PasswordInput';
-import schema from '../validation/registrationSchema';
-import Validation from '../validation';
+import Switch from 'react-switch';
 
-const RegistrationForm = onSubmit => {
+import PasswordInput from '../../components/PasswordInput';
+import schema from '../../validation/registrationSchema';
+import Validation from '../../validation';
+
+const RegistrationForm = ({ onSubmit }) => {
+	const formik = useRef(null);
 	return (
 		<div className="container">
 			<Formik
@@ -13,7 +16,9 @@ const RegistrationForm = onSubmit => {
 					name: '',
 					password: '',
 					email: '',
+					isOwner: false,
 				}}
+				innerRef={formik}
 				validationSchema={schema}
 				onSubmit={onSubmit}
 				render={props => {
@@ -36,14 +41,6 @@ const RegistrationForm = onSubmit => {
 										</Validation>
 									</FormField>
 									<FormField>
-										<label htmlFor="password" className="label">
-											<span>Password</span>
-										</label>
-										<Validation name="password" showMessage={true}>
-											<PasswordInput value={values.password} name="password" />
-										</Validation>
-									</FormField>
-									<FormField>
 										<label htmlFor="email" className="label">
 											<span>Email</span>
 										</label>
@@ -54,6 +51,28 @@ const RegistrationForm = onSubmit => {
 												name="email"
 											/>
 										</Validation>
+									</FormField>
+									<FormField>
+										<label htmlFor="password" className="label">
+											<span>Password</span>
+										</label>
+										<Validation name="password" showMessage={true}>
+											<PasswordInput value={values.password} name="password" />
+										</Validation>
+									</FormField>
+									<FormField className="toggle">
+										<label className="label">
+											<span>Register as Restaurant Owner</span>
+										</label>
+										<Switch
+											onChange={() =>
+												formik.current?.setValues({
+													...values,
+													isOwner: !values.isOwner,
+												})
+											}
+											checked={values.isOwner}
+										/>
 									</FormField>
 								</div>
 								<Button

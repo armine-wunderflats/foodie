@@ -37,7 +37,7 @@ const ConfirmationModal = ({ loading, submissionError, cart, createOrder }) => {
 		if (loading || submissionError) return;
 
 		setOpen(false);
-		history.goBack();
+		history.push('/');
 	}, [loading]);
 
 	return (

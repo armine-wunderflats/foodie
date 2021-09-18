@@ -69,10 +69,14 @@ class AuthController extends Controller
         
         try{
             $user = $this->user_service->create($payload, $request['isOwner']);
+            $credentials = $request->only(['email', 'password']);
+            $token = JWTAuth::attempt($credentials);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'User created successfully',
-                'data' => $user
+                'data' => $user,
+                'token' => $token
             ]);
         } catch (Exception $e) {
             Log::warning('User registration failed.', ['error' => $e->getMessage()]);

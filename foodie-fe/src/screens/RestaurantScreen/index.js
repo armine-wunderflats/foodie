@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
@@ -59,12 +59,9 @@ const RestaurantScreen = props => {
 
 	return (
 		<div id="restaurant_screen">
-			<Icon
-				name="arrow left"
-				size="large"
-				className="floatLeft goBack"
-				onClick={() => history.goBack()}
-			/>
+			<Link to="/">
+				<Icon name="arrow left" size="large" className="floatLeft goBack" />
+			</Link>
 			<h1 className="darkBlue">{restaurant.name}</h1>
 			<h2 className="darkBlue">{restaurant.food_type}</h2>
 			<div className="container">

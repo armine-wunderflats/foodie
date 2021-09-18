@@ -112,6 +112,12 @@
 	color: gray;
 }
 
+.toggle {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px !important;
+}
+
 #login_screen,
 #auth_screen {
 	display: flex;

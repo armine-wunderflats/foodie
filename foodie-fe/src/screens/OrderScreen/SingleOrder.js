@@ -25,7 +25,6 @@ const SingleOrder = props => {
 	const isCustomer = user?.is_customer;
 	const nextStatus = useMemo(() => {
 		const statuses = Object.values(constants.orderStatus);
-		console.log(statuses);
 		if (order?.status === constants.orderStatus.PLACED)
 			return isOwner
 				? constants.orderStatus.PROCESSING
@@ -81,12 +80,11 @@ const SingleOrder = props => {
 
 	return (
 		<div id="single_order_screen">
-			<Icon
-				name="arrow left"
-				size="large"
-				className="floatLeft goBack"
-				onClick={() => history.goBack()}
-			/>
+			<Link
+				to={isCustomer ? '/orders' : `restaurant/${order.restaurant_id}/orders`}
+			>
+				<Icon name="arrow left" size="large" className="floatLeft goBack" />
+			</Link>
 			<h1 className="clear darkBlue">Order</h1>
 			<div className="container alignLeft">
 				<p className="orderInfo">
