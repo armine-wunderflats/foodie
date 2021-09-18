@@ -146,8 +146,9 @@
 	max-width: 80vw;
 }
 
-#home_screen .itemContainer {
+#home_screen .container .button.itemContainer {
 	padding: 20px;
+	width: 100%;
 }
 
 #home_screen .itemSubtitle {

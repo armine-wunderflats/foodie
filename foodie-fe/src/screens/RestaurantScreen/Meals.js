@@ -33,10 +33,11 @@ const Meals = ({ data, occurences, handleAdd, handleDeduct, isCustomer }) => {
 
 	return (
 		<Grid columns={width > 500 ? 2 : 1} className="clear">
-			{data.length < 1 && (
-				<h3 className="emptyList">There aren't any meals yet</h3>
-			)}
-			{data.map(item => {
+			{!data ||
+				(data.length < 1 && (
+					<h3 className="emptyList">There aren't any meals yet</h3>
+				))}
+			{data?.map(item => {
 				return (
 					<Grid.Column key={item.id}>
 						<div className="itemContainer">

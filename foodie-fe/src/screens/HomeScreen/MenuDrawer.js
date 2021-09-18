@@ -38,7 +38,7 @@ const MenuDrawer = props => {
 				</Menu.Item>
 			)}
 			{isOwner && (
-				<Menu.Item as={Link} to="/restaurant" className="menuItem">
+				<Menu.Item as={Link} to="/restaurants/create" className="menuItem">
 					<Icon name="food" size="large" />
 					Add Restaurant
 				</Menu.Item>

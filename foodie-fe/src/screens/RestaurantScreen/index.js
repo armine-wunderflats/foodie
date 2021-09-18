@@ -13,8 +13,7 @@ import constants from '../../constants';
 
 const RestaurantScreen = props => {
 	const { id } = useParams();
-	const { user, restaurant, history, getRestaurantById, getCurrentUser } =
-		props;
+	const { user, restaurant, getRestaurantById, getCurrentUser } = props;
 	const [visible, setVisible] = useState(false);
 	const [cartItems, setCartItems] = useState([]);
 	const [cart, setCart] = useState(
