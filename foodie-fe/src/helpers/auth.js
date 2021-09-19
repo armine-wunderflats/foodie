@@ -1,5 +1,5 @@
-import constants from '../constants';
 import axios from 'axios';
+import constants from '../constants';
 import store from '../redux/store';
 import { logout } from '../redux/ducks/auth';
 
@@ -30,6 +30,10 @@ axios.interceptors.response.use(
 	async error => {
 		if (error.config && error.response && error.response.status === 401) {
 			store.dispatch(logout());
+		}
+
+		if (error.config && error.response && (error.response.status === 404 || error.response.status === 403)) {
+			window.location.href = '/';
 		}
 
 		return Promise.reject(error);

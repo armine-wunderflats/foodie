@@ -4,7 +4,7 @@ import { Button, Icon, Modal, Header, Input, TextArea, FormField, Form } from 's
 import { useParams, useHistory } from 'react-router-dom';
 import { createOrder } from '../../redux/ducks/order';
 
-const ConfirmationModal = ({ loading, submissionError, cart, createOrder }) => {
+const OrderModal = ({ loading, submissionError, cart, createOrder }) => {
 	const { id } = useParams();
 	const history = useHistory();
 	const [open, setOpen] = useState(false);
@@ -77,4 +77,4 @@ const mapDispatchToProps = dispatch => ({
 	createOrder: (id, data) => dispatch(createOrder(id, data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderModal);

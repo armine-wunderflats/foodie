@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Sidebar, Menu } from 'semantic-ui-react';
 import { numberToCash } from '../../helpers/numberHelper';
-import ConfirmationModal from './ConfirmationModal';
+import OrderModal from './OrderModal';
 
 const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
 	const totalPrice = useMemo(() => cartItems?.reduce((a, b) => a + b.price * occurences[b.id], 0), [cartItems]);
@@ -26,7 +26,7 @@ const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
 			))}
 			<Menu.Item>
 				<h3>Total Price: {numberToCash(totalPrice)}</h3>
-				<ConfirmationModal cart={cart} />
+				<OrderModal cart={cart} />
 			</Menu.Item>
 		</Sidebar>
 	);

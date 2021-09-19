@@ -32,38 +32,6 @@ Make sure you have PHP version >=7.2.5 and [Composer](https://getcomposer.org/do
  php artisan serve
 ```
 
-## Running jobs
-
-In order to run jobs and broadcast events, you need to start the database queue by running the following command:
-
-```bash
-php artisan queue:work database
-```
-
-This process needs to keep running in order to dispatch jobs.
-
-Alternatively, you can change `QUEUE_CONNECTION` in the .env file to `sync` and clear the application cache.
-
-## Running the scheduler
-
-In a production server you can start the scheduler by adding a cron command that runs the schedule:run command every minute. You can do so by adding the following to your crontab configuration:
-
-```bash
-* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
-```
-
-In a testing or development environment you can start the scheduler by running the following command:
-
-```bash
-php artisan schedule:work
-```
-
-You can also make the scheduler work manually by running the following command:
-
-```bash
-php artisan schedule:run
-```
-
 ## Maintaining the Server
 
 1. In order to update the database with the new changes run the following command:
@@ -98,6 +66,7 @@ composer dump-autoload
 ```
 
 ## Useful links
+
 [Spatie Roles and Permissions Documentation](https://spatie.be/docs/laravel-permission/v5/installation-laravel)
 [CORS Middleware Documentation](https://github.com/fruitcake/laravel-cors)
 [JWT Documentation](https://github.com/tymondesigns/jwt-auth/wiki)

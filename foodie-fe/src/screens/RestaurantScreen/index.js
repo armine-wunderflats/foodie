@@ -43,7 +43,7 @@ const RestaurantScreen = props => {
 		setCart(newCart);
 	};
 
-	const isOwner = user?.is_owner;
+	const isOwner = user?.is_owner && user?.id === restaurant?.owner_id;
 	const isBlocked = user?.blocked_restaurant_ids.includes(+id);
 	const canOrder = user?.is_customer && !isBlocked;
 

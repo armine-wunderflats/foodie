@@ -6,12 +6,18 @@ import { useHistory, Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import Loader from './Loader';
+import { getCurrentUser } from '../redux/ducks/user';
 import Validation from '../validation';
 
-const RestaurantForm = ({ loading, restaurant, onSubmit, schema, title, buttonText, isEdit }) => {
+const RestaurantForm = ({ loading, restaurant, onSubmit, schema, title, buttonText, isEdit, user, getCurrentUser }) => {
 	const history = useHistory();
 	const { id } = useParams();
 	const [submitted, setSubmitted] = useState(false);
+
+	useEffect(() => {
+		!user && getCurrentUser();
+	}, []);
+
 	useEffect(() => {
 		if (!restaurant || !submitted) return;
 
@@ -89,6 +95,11 @@ const RestaurantForm = ({ loading, restaurant, onSubmit, schema, title, buttonTe
 const mapStateToProps = state => ({
 	loading: state.restaurant.loading,
 	restaurant: state.restaurant.restaurant,
+	user: state.user.currentUser,
 });
 
-export default connect(mapStateToProps)(RestaurantForm);
+const mapDispatchToProps = dispatch => ({
+	getCurrentUser: () => dispatch(getCurrentUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantForm);

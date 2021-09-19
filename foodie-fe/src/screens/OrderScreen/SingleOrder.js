@@ -11,16 +11,17 @@ import { getOrderById, updateOrderStatus } from '../../redux/ducks/order';
 import { blockUser, unblockUser } from '../../redux/ducks/restaurant';
 import { numberToCash } from '../../helpers/numberHelper';
 import constants from '../../constants';
+import DateDetails from './DateDetails';
 
 const SingleOrder = props => {
 	const { user, order, getCurrentUser, getOrderById, updateOrderStatus, blockUser, unblockUser, user_blocked } = props;
 	const { id } = useParams();
-	const isOwner = user?.is_owner;
+	const isOwner = user?.is_owner && user?.id === order?.restaurant.owner_id;
 	const isCustomer = user?.is_customer;
 	const [blockCalled, setblockCalled] = useState(false);
 	const blocked = blockCalled ? user_blocked : order?.customer_blocked;
-
 	const backUrl = isCustomer ? '/orders' : `/restaurants/${order?.restaurant_id}/orders`;
+
 	const nextStatus = useMemo(() => {
 		const statuses = Object.values(constants.orderStatus);
 		if (order?.status === constants.orderStatus.PLACED)
@@ -41,6 +42,7 @@ const SingleOrder = props => {
 		() => (nextStatus === constants.orderStatus.CANCELED ? 'Cancel Order' : 'Mark as ' + nextStatus),
 		[nextStatus]
 	);
+
 	const occurences = useMemo(
 		() =>
 			order?.meals?.reduce((acc, curr) => {
@@ -94,6 +96,7 @@ const SingleOrder = props => {
 					<p className="extraInfo">Restaurant: {order.restaurant_name}</p>
 				)}
 				<p className="orderInfo">Status: {order.status}</p>
+				<DateDetails order={order} />
 				<div className="ui list">
 					{occurences.map(meal => (
 						<div className="item">

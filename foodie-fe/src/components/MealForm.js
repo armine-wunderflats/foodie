@@ -7,8 +7,10 @@ import { useParams } from 'react-router';
 
 import Loader from './Loader';
 import Validation from '../validation';
+import ConfirmationModal from './ConfirmationModal';
+import { deleteMealById } from '../redux/ducks/meal';
 
-const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit }) => {
+const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit, deleteMealById }) => {
 	const history = useHistory();
 	const [submitted, setSubmitted] = useState(false);
 	const { id } = useParams();
@@ -21,6 +23,11 @@ const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit }
 	const handleSubmit = data => {
 		setSubmitted(true);
 		onSubmit(data);
+	};
+
+	const handleDelete = () => {
+		deleteMealById(meal.id);
+		history.push(`/restaurants/${id}`);
 	};
 
 	if (!meal && isEdit) return <Loader loading />;
@@ -36,7 +43,7 @@ const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit }
 				<Formik
 					initialValues={{
 						name: isEdit ? meal?.name : '',
-						price: isEdit ? meal?.price : 0,
+						price: isEdit ? meal?.price : undefined,
 						description: isEdit ? meal?.description || '' : '',
 					}}
 					validationSchema={schema}
@@ -75,6 +82,20 @@ const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit }
 											</Validation>
 										</FormField>
 									</div>
+									{isEdit && (
+										<ConfirmationModal
+											title="Delete Meal"
+											content={`Are you sure you want to delete ${meal.name}? This action is irreversible and all your data will be lost.`}
+											buttonText="Delete"
+											onSubmit={handleDelete}
+											icon="trash"
+											trigger={
+												<Button type="button" secondary>
+													Delete
+												</Button>
+											}
+										/>
+									)}
 									<Button type="submit" primary onSubmit={props.onSubmit}>
 										{buttonText}
 									</Button>
@@ -93,4 +114,8 @@ const mapStateToProps = state => ({
 	meal: state.meal.meal,
 });
 
-export default connect(mapStateToProps)(MealForm);
+const mapDispatchToProps = dispatch => ({
+	deleteMealById: id => dispatch(deleteMealById(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MealForm);
