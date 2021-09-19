@@ -12,9 +12,7 @@ const Restaurants = ({ data, isOwner }) => {
 	if (data.length < 1)
 		return (
 			<h3 className="emptyList">
-				{isOwner
-					? "You don't have any restaurants yet"
-					: "There aren't any restaurants yet"}
+				{isOwner ? "You don't have any restaurants yet" : "There aren't any restaurants yet"}
 			</h3>
 		);
 
@@ -22,11 +20,7 @@ const Restaurants = ({ data, isOwner }) => {
 		<Grid columns={width > 500 ? 2 : 1}>
 			{data.map(item => (
 				<Grid.Column key={item.id}>
-					<Button
-						as={Link}
-						className="itemContainer"
-						to={`/restaurants/${item.id}`}
-					>
+					<Button as={Link} className="itemContainer" to={`/restaurants/${item.id}`}>
 						<h3 className="itemTitle">{item.name}</h3>
 						<p className="itemSubtitle">{item.food_type}</p>
 						<p>{item.description?.trunc()}</p>

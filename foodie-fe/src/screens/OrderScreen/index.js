@@ -10,14 +10,7 @@ import { getCurrentUser } from '../../redux/ducks/user';
 import { getUserOrders, getRestaurantOrders } from '../../redux/ducks/order';
 
 const OrderScreen = props => {
-	const {
-		orders,
-		loading,
-		user,
-		getCurrentUser,
-		getUserOrders,
-		getRestaurantOrders,
-	} = props;
+	const { orders, loading, user, getCurrentUser, getUserOrders, getRestaurantOrders } = props;
 	const { id } = useParams();
 
 	useEffect(() => {
@@ -42,20 +35,16 @@ const OrderScreen = props => {
 			<h1 className="clear darkBlue">Orders</h1>
 			<div className="container">
 				<div className="ui list">
-					{orders.length < 1 && (
-						<h3 className="emptyList">You don't have any orders yet</h3>
-					)}
+					{orders.length < 1 && <h3 className="emptyList">You don't have any orders yet</h3>}
 					{orders.map(order => (
 						<div className="item">
 							<Button as={Link} to={`/orders/${order.id}`}>
 								<div className="floatRight">
 									<Icon className="icon" name="angle right" size="large" />
 								</div>
-								<div className="orderInfo">
+								<div className="flex">
 									{user.is_owner ? order.customer_name : order.restaurant_name}
-									<span>
-										{moment(order.created_at).format('MMM Do YYYY, h:mm a')}
-									</span>
+									<span>{moment(order.created_at).format('MMM Do YYYY, h:mm a')}</span>
 								</div>
 							</Button>
 						</div>

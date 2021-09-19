@@ -65,7 +65,7 @@ class RestaurantPolicy
      */
     public function update(User $user, Restaurant $restaurant)
     {
-        return $user->id == $restaurant->owner->id;
+        return $user->id == $restaurant->owner_id;
     }
 
     /**

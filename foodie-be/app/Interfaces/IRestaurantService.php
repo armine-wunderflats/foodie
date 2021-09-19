@@ -98,4 +98,24 @@ interface IRestaurantService
      * @return App\Models\Order $order
      */
     public function createOrder($restaurant_id, $user, $data);
+
+    /**
+     * Block a user from ordering from the restaurant
+     * 
+     * @param App\Models\Restaurant $restaurant
+     * @param id $user_id
+     * 
+     * @return void
+     */
+    public function blockUser($restaurant, $user_id);
+
+    /**
+     * Unlock a user from ordering from the restaurant
+     * 
+     * @param App\Models\Restaurant $restaurant
+     * @param id $user_id
+     * 
+     * @return void
+     */
+    public function unblockUser($restaurant, $user_id);
 }

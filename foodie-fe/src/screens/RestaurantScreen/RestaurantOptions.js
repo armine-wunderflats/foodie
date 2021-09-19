@@ -15,29 +15,16 @@ const RestaurantOptions = ({ visible, setVisible, restaurant }) => {
 			className="menuDrawer"
 			direction="right"
 			visible={visible}
-			width={width > 600 ? 'wide' : 'thin'}
-		>
-			<Menu.Item
-				as={Link}
-				className="menuItem"
-				to={`/restaurants/${restaurant.id}/edit`}
-			>
+			width={width > 600 ? 'wide' : 'thin'}>
+			<Menu.Item as={Link} className="menuItem" to={`/restaurants/${restaurant.id}/edit`}>
 				<Icon name="edit" size="large" />
 				Edit Restaurant
 			</Menu.Item>
-			<Menu.Item
-				to={`/restaurants/${restaurant.id}/meals/create`}
-				as={Link}
-				className="menuItem"
-			>
+			<Menu.Item to={`/restaurants/${restaurant.id}/meals/create`} as={Link} className="menuItem">
 				<Icon name="food" size="large" />
 				Add Meal
 			</Menu.Item>
-			<Menu.Item
-				as={Link}
-				className="menuItem"
-				to={`/restaurants/${restaurant.id}/orders`}
-			>
+			<Menu.Item as={Link} className="menuItem" to={`/restaurants/${restaurant.id}/orders`}>
 				<Icon name="list" size="large" />
 				View Orders
 			</Menu.Item>

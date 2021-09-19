@@ -4,10 +4,7 @@ import { numberToCash } from '../../helpers/numberHelper';
 import ConfirmationModal from './ConfirmationModal';
 
 const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
-	const totalPrice = useMemo(
-		() => cartItems?.reduce((a, b) => a + b.price * occurences[b.id], 0),
-		[cartItems]
-	);
+	const totalPrice = useMemo(() => cartItems?.reduce((a, b) => a + b.price * occurences[b.id], 0), [cartItems]);
 	const { innerWidth: width } = window;
 
 	return (
@@ -19,8 +16,7 @@ const ShoppingCart = ({ cart, cartItems, occurences, visible, setVisible }) => {
 			inverted
 			direction="right"
 			visible={visible}
-			width={width > 600 ? 'wide' : 'thin'}
-		>
+			width={width > 600 ? 'wide' : 'thin'}>
 			{cartItems?.map(item => (
 				<Menu.Item>
 					<h3>{item.name}</h3>

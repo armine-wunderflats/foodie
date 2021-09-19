@@ -120,6 +120,24 @@ class RestaurantService implements IRestaurantService
         return $order;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function blockUser($restaurant, $user_id)
+    {
+        Log::info('Block a user');
+        $restaurant->blocked_users()->attach($user_id);      
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unblockUser($restaurant, $user_id)
+    {
+        Log::info('Unblock a user');
+        $restaurant->blocked_users()->detach($user_id);      
+    }
+
     private function filterMealIds($restaurant_id, $mealIds)
     {
         $array = [];

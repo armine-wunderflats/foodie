@@ -9,13 +9,13 @@ const Meals = ({
 	occurences,
 	handleAdd,
 	handleDeduct,
-	isCustomer,
+	canOrder,
 	isOwner,
 }) => {
 	const { innerWidth: width } = window;
 	const { id } = useParams();
 	const AddToCartButtons = ({ item }) => {
-		if (!isCustomer) return <></>;
+		if (!canOrder) return <></>;
 
 		const isAdded = occurences[item.id] > 0;
 		return (

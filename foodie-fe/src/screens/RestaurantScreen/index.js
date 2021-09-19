@@ -16,9 +16,7 @@ const RestaurantScreen = props => {
 	const { user, restaurant, getRestaurantById, getCurrentUser } = props;
 	const [visible, setVisible] = useState(false);
 	const [cartItems, setCartItems] = useState([]);
-	const [cart, setCart] = useState(
-		JSON.parse(localStorage.getItem(constants.shoppingCart + id)) || []
-	);
+	const [cart, setCart] = useState(JSON.parse(localStorage.getItem(constants.shoppingCart + id)) || []);
 	const occurences = useMemo(
 		() =>
 			cart.reduce((acc, curr) => {
@@ -46,7 +44,8 @@ const RestaurantScreen = props => {
 	};
 
 	const isOwner = user?.is_owner;
-	const isCustomer = user?.is_customer;
+	const isBlocked = user?.blocked_restaurant_ids.includes(+id);
+	const canOrder = user?.is_customer && !isBlocked;
 
 	const handleDeduct = itemId => {
 		const index = cart.indexOf(itemId);
@@ -65,12 +64,14 @@ const RestaurantScreen = props => {
 			<h2 className="darkBlue">{restaurant.food_type}</h2>
 			<div className="container">
 				<p>{restaurant.description}</p>
-				{isCustomer && (
-					<Button
-						className="floatRight cart"
-						disabled={cart.length < 1}
-						onClick={() => setVisible(true)}
-					>
+				{isBlocked && (
+					<p className="blocked">
+						<Icon name="warning sign" />
+						You have been blocked by {restaurant.name} and cannot place an order.
+					</p>
+				)}
+				{canOrder && (
+					<Button className="floatRight cart" disabled={cart.length < 1} onClick={() => setVisible(true)}>
 						View Cart
 						<Icon name="cart" size="large" />
 					</Button>
@@ -85,11 +86,11 @@ const RestaurantScreen = props => {
 					handleAdd={handleAdd}
 					handleDeduct={handleDeduct}
 					occurences={occurences}
-					isCustomer={isCustomer}
+					canOrder={canOrder}
 					isOwner={isOwner}
 				/>
 			</div>
-			{isCustomer && (
+			{canOrder && (
 				<ShoppingCart
 					cart={cart}
 					cartItems={cartItems}
@@ -98,13 +99,7 @@ const RestaurantScreen = props => {
 					occurences={occurences}
 				/>
 			)}
-			{isOwner && (
-				<RestaurantOptions
-					visible={visible}
-					setVisible={setVisible}
-					restaurant={restaurant}
-				/>
-			)}
+			{isOwner && <RestaurantOptions visible={visible} setVisible={setVisible} restaurant={restaurant} />}
 		</div>
 	);
 };

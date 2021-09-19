@@ -33,11 +33,7 @@ const RegistrationForm = ({ onSubmit }) => {
 											<span>Name</span>
 										</label>
 										<Validation name="name" showMessage={true}>
-											<Input
-												autoCapitalize="off"
-												value={values.name}
-												name="name"
-											/>
+											<Input autoCapitalize="off" value={values.name} name="name" />
 										</Validation>
 									</FormField>
 									<FormField>
@@ -45,11 +41,7 @@ const RegistrationForm = ({ onSubmit }) => {
 											<span>Email</span>
 										</label>
 										<Validation name="email" showMessage={true}>
-											<Input
-												autoCapitalize="off"
-												value={values.email}
-												name="email"
-											/>
+											<Input autoCapitalize="off" value={values.email} name="email" />
 										</Validation>
 									</FormField>
 									<FormField>
@@ -75,12 +67,7 @@ const RegistrationForm = ({ onSubmit }) => {
 										/>
 									</FormField>
 								</div>
-								<Button
-									type="submit"
-									secondary
-									onSubmit={props.onSubmit}
-									className="register"
-								>
+								<Button type="submit" secondary onSubmit={props.onSubmit} className="register">
 									Register
 								</Button>
 							</div>

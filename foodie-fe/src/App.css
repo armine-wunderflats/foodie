@@ -130,6 +130,11 @@ div.ui.icon.input {
 	margin-bottom: 30px !important;
 }
 
+.flex {
+	display: flex;
+	justify-content: space-between;
+}
+
 #login_screen,
 #auth_screen {
 	display: flex;
@@ -225,6 +230,12 @@ div.ui.icon.input {
 	margin-left: 5px;
 }
 
+#restaurant_screen .blocked {
+	font-size: 20px;
+	color: red;
+	font-weight: 500;
+}
+
 #order_screen {
 	align-items: center;
 }
@@ -233,11 +244,6 @@ div.ui.icon.input {
 	padding: 20px;
 	height: 58px;
 	width: 100%;
-}
-
-#order_screen .orderInfo {
-	display: flex;
-	justify-content: space-between;
 }
 
 #order_screen .orderInfo span {

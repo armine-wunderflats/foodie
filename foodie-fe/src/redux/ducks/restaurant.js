@@ -8,6 +8,7 @@ const initialState = {
 	restaurant: null,
 	restaurantList: null,
 	current_page: 1,
+	user_blocked: false,
 };
 
 const restaurantSlice = createSlice({
@@ -18,6 +19,7 @@ const restaurantSlice = createSlice({
 			...state,
 			loading: true,
 			current_page: action.payload?.current_page,
+			user_blocked: false,
 		}),
 		getRestaurantSuccess: (state, action) => ({
 			...state,
@@ -31,6 +33,7 @@ const restaurantSlice = createSlice({
 		getRestaurantById: state => ({
 			...state,
 			restaurant: null,
+			user_blocked: false,
 			loading: true,
 		}),
 		getRestaurantByIdSuccess: (state, action) => ({
@@ -81,6 +84,20 @@ const restaurantSlice = createSlice({
 			restaurant: action.payload,
 		}),
 		createRestaurantFail: state => ({
+			...state,
+			loading: false,
+		}),
+		blockUser: state => ({
+			...state,
+			loading: true,
+			user_blocked: false,
+		}),
+		blockUserSuccess: (state, action) => ({
+			...state,
+			loading: false,
+			user_blocked: action.payload,
+		}),
+		blockUserFail: state => ({
 			...state,
 			loading: false,
 		}),
@@ -185,6 +202,40 @@ export const updateRestaurant = (id, data) => {
 			.catch(error => {
 				toast.error('Restaurant update failed');
 				dispatch(restaurantSlice.actions.updateRestaurantFail());
+			});
+	};
+};
+
+export const blockUser = (id, data) => {
+	return dispatch => {
+		dispatch(restaurantSlice.actions.blockUser());
+
+		axios
+			.post(`${API_URL}/restaurants/${id}/block`, data)
+			.then(r => {
+				dispatch(restaurantSlice.actions.blockUserSuccess(true));
+				toast.success('User blocked sucessfully');
+			})
+			.catch(error => {
+				toast.error('Could not block user');
+				dispatch(restaurantSlice.actions.blockUserFail());
+			});
+	};
+};
+
+export const unblockUser = (id, data) => {
+	return dispatch => {
+		dispatch(restaurantSlice.actions.blockUser());
+
+		axios
+			.post(`${API_URL}/restaurants/${id}/unblock`, data)
+			.then(r => {
+				dispatch(restaurantSlice.actions.blockUserSuccess(false));
+				toast.success('User unblocked sucessfully');
+			})
+			.catch(error => {
+				toast.error('Could not unblock user');
+				dispatch(restaurantSlice.actions.blockUserFail());
 			});
 	};
 };

@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import schema from '../../validation/restaurantSchema';
-import {
-	updateRestaurant,
-	getRestaurantById,
-} from '../../redux/ducks/restaurant';
+import { updateRestaurant, getRestaurantById } from '../../redux/ducks/restaurant';
 import RestaurantForm from '../../components/RestaurantForm';
 
 const EditRestaurantScreen = ({ updateRestaurant, getRestaurantById }) => {

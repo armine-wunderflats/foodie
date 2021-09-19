@@ -29,8 +29,7 @@ const MenuDrawer = props => {
 			direction="right"
 			visible={visible}
 			width={width > 600 ? 'wide' : 'thin'}
-			className="menuDrawer"
-		>
+			className="menuDrawer">
 			{isCustomer && (
 				<Menu.Item as={Link} to="/orders" className="menuItem">
 					<Icon name="list" size="large" />

@@ -6,27 +6,15 @@ import debounce from 'lodash.debounce';
 import Loader from '../../components/Loader';
 import MenuDrawer from './MenuDrawer';
 import Restaurants from './Restaurants';
-import {
-	getRestaurants,
-	getOwnerRestaurants,
-} from '../../redux/ducks/restaurant';
+import { getRestaurants, getOwnerRestaurants } from '../../redux/ducks/restaurant';
 import { getCurrentUser } from '../../redux/ducks/user';
 
 const HomeScreen = props => {
-	const {
-		restaurantList,
-		getRestaurants,
-		getOwnerRestaurants,
-		user,
-		getCurrentUser,
-	} = props;
+	const { restaurantList, getRestaurants, getOwnerRestaurants, user, getCurrentUser } = props;
 	const [visible, setVisible] = useState(false);
 	const debouncedgetRestaurants = useCallback(
 		debounce(
-			(current_page, filter) =>
-				user.is_owner
-					? getOwnerRestaurants()
-					: getRestaurants(current_page, filter),
+			(current_page, filter) => (user.is_owner ? getOwnerRestaurants() : getRestaurants(current_page, filter)),
 			500
 		),
 		[user]
@@ -70,20 +58,12 @@ const HomeScreen = props => {
 			{!user?.is_owner && (
 				<div className="pagination">
 					{current_page > 1 && (
-						<Button
-							secondary
-							className="floatLeft"
-							onClick={() => getRestaurants(current_page - 1)}
-						>
+						<Button secondary className="floatLeft" onClick={() => getRestaurants(current_page - 1)}>
 							Previous
 						</Button>
 					)}
 					{last_page != current_page && (
-						<Button
-							secondary
-							className="floatRight"
-							onClick={() => getRestaurants(current_page + 1)}
-						>
+						<Button secondary className="floatRight" onClick={() => getRestaurants(current_page + 1)}>
 							Next
 						</Button>
 					)}

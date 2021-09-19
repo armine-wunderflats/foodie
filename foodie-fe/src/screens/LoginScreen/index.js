@@ -40,11 +40,7 @@ const LoginScreen = ({ loading, login }) => {
 												<span>Email</span>
 											</label>
 											<Validation name="email" showMessage={true}>
-												<Input
-													autoCapitalize="off"
-													value={values.email}
-													name="email"
-												/>
+												<Input autoCapitalize="off" value={values.email} name="email" />
 											</Validation>
 										</FormField>
 										<FormField>
@@ -52,19 +48,11 @@ const LoginScreen = ({ loading, login }) => {
 												<span>Password</span>
 											</label>
 											<Validation name="password" showMessage={true}>
-												<PasswordInput
-													value={values.password}
-													name="password"
-												/>
+												<PasswordInput value={values.password} name="password" />
 											</Validation>
 										</FormField>
 									</div>
-									<Button
-										type="submit"
-										secondary
-										onSubmit={props.onSubmit}
-										className="login"
-									>
+									<Button type="submit" secondary onSubmit={props.onSubmit} className="login">
 										Login
 										<Icon name="sign-in" />
 									</Button>

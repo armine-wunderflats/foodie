@@ -32,11 +32,7 @@ const Validation = ({ children, name, showMessage, formik }) => {
 					},
 				});
 			})}
-			{showMessage && (
-				<div className="error">
-					{errors[name] && touched[name] ? errors[name] : ''}
-				</div>
-			)}
+			{showMessage && <div className="error">{errors[name] && touched[name] ? errors[name] : ''}</div>}
 		</React.Fragment>
 	);
 };

@@ -63,4 +63,10 @@ return [
             'password' => 'string|min:6|max:50',
         ],
     ],
+
+    'block_user' => [
+        'validation_rules' => [
+            'user' => 'required',
+        ],
+    ],
 ];

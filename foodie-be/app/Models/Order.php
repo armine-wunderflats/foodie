@@ -39,6 +39,7 @@ class Order extends Model
         'total_price',
         'restaurant_name',
         'customer_name',
+        'customer_blocked',
     ];
     
     public function user()
@@ -69,5 +70,12 @@ class Order extends Model
     public function getCustomerNameAttribute()
     {
         return $this->user->name;
+    }
+
+    public function getCustomerBlockedAttribute()
+    {
+        return $this->user->blocked_restaurants()
+            ->where('restaurant_id', $this->restaurant->id)
+            ->exists();
     }
 }

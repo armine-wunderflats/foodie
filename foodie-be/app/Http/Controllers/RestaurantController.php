@@ -9,6 +9,7 @@ use App\Http\Requests\CreateMealRequest;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\CreateRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
+use App\Http\Requests\BlockUserRequest;
 use Illuminate\Http\Request;
 use App\Interfaces\IRestaurantService;
 use App\Models\Restaurant;
@@ -300,6 +301,62 @@ class RestaurantController extends Controller
             }
 
             Log::error('Create a new order for the restaurant, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+    
+    /**
+     * Block user by id
+     * 
+     * @param App\Http\Requests\BlockUserRequest $request
+     * @param int $id
+     * 
+     * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function blockUser(BlockUserRequest $request, $id)
+    {
+        $restaurant = $this->show($id);
+        $this->authorize('update', $restaurant);
+
+        try {
+            return $this->restaurant_service->blockUser($restaurant, $request['user']);
+        } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Block user by id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
+            Log::error('Block user by id, Exception', ['error' => $e->getMessage()]);
+            throw new InternalErrorException();
+        }
+    }
+    
+    /**
+     * Unblock user by id
+     * 
+     * @param App\Http\Requests\BlockUserRequest $request
+     * @param int $id
+     * 
+     * @throws InternalErrorException 
+     * @throws ModelNotFoundException 
+     * @return App\Models\Restaurant $restaurant
+     */
+    public function unblockUser(BlockUserRequest $request, $id)
+    {
+        $restaurant = $this->show($id);
+        $this->authorize('update', $restaurant);
+
+        try {
+            return $this->restaurant_service->unblockUser($restaurant, $request['user']);
+        } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                Log::warning('Unblock user by id, ModelNotFoundException', ['error' => $e->getMessage()]);
+                throw $e;
+            }
+
+            Log::error('Unblock user by id, Exception', ['error' => $e->getMessage()]);
             throw new InternalErrorException();
         }
     }

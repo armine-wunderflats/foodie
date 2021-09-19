@@ -6,9 +6,7 @@ const registrationSchema = Yup.object().shape({
 		.min(6, 'The password must have at least 6 characters')
 		.max(50, 'The password must have at most 50 characters'),
 	name: Yup.string().required('Name is required'),
-	email: Yup.string()
-		.email('The email is invalid')
-		.required('The Email is required'),
+	email: Yup.string().email('The email is invalid').required('The Email is required'),
 });
 
 export default registrationSchema;

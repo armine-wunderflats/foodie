@@ -8,15 +8,7 @@ import { useParams } from 'react-router';
 import Loader from './Loader';
 import Validation from '../validation';
 
-const RestaurantForm = ({
-	loading,
-	restaurant,
-	onSubmit,
-	schema,
-	title,
-	buttonText,
-	isEdit,
-}) => {
+const RestaurantForm = ({ loading, restaurant, onSubmit, schema, title, buttonText, isEdit }) => {
 	const history = useHistory();
 	const { id } = useParams();
 	const [submitted, setSubmitted] = useState(false);
@@ -77,10 +69,7 @@ const RestaurantForm = ({
 												<span>Description</span>
 											</label>
 											<Validation name="description" showMessage={true}>
-												<TextArea
-													value={values.description}
-													name="description"
-												/>
+												<TextArea value={values.description} name="description" />
 											</Validation>
 										</FormField>
 									</div>

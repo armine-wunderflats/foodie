@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-import {
-	Input,
-	FormField,
-	Button,
-	TextArea,
-	Icon,
-	Label,
-} from 'semantic-ui-react';
+import { Input, FormField, Button, TextArea, Icon, Label } from 'semantic-ui-react';
 import { useHistory, Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import Loader from './Loader';
 import Validation from '../validation';
 
-const MealForm = ({
-	loading,
-	meal,
-	onSubmit,
-	schema,
-	title,
-	buttonText,
-	isEdit,
-}) => {
+const MealForm = ({ loading, meal, onSubmit, schema, title, buttonText, isEdit }) => {
 	const history = useHistory();
 	const [submitted, setSubmitted] = useState(false);
 	const { id } = useParams();
@@ -76,12 +61,7 @@ const MealForm = ({
 												<span>Price</span>
 											</label>
 											<Validation name="price" showMessage={true}>
-												<Input
-													labelPosition="right"
-													value={values.price}
-													name="price"
-													type="number"
-												>
+												<Input labelPosition="right" value={values.price} name="price" type="number">
 													<Label basic>$</Label> <input />
 												</Input>
 											</Validation>
@@ -91,10 +71,7 @@ const MealForm = ({
 												<span>Description</span>
 											</label>
 											<Validation name="description" showMessage={true}>
-												<TextArea
-													value={values.description}
-													name="description"
-												/>
+												<TextArea value={values.description} name="description" />
 											</Validation>
 										</FormField>
 									</div>

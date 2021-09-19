@@ -37,6 +37,8 @@ $api->version('v1', function ($api) {
         $api->get('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@getRestaurantOrders');
         $api->post('restaurants/{id}/orders', 'App\Http\Controllers\RestaurantController@createOrder');
         $api->get('me/restaurants', 'App\Http\Controllers\RestaurantController@getUserRestaurants');
+        $api->post('restaurants/{id}/block', 'App\Http\Controllers\RestaurantController@blockUser');
+        $api->post('restaurants/{id}/unblock', 'App\Http\Controllers\RestaurantController@unblockUser');
 
         $api->get('meals/{id}', 'App\Http\Controllers\MealController@show');
         $api->put('meals/{id}', 'App\Http\Controllers\MealController@update');
